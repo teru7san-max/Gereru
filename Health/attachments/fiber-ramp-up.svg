@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" font-family="-apple-system, 'SF Pro Text', 'Helvetica Neue', sans-serif">
+<title>Jumping straight to the fiber target causes bloating; adding 3–5 g a week reaches 25 g (women) and 38 g (men) comfortably</title>
+<g><animate attributeName="opacity" values="0;1;1;0" keyTimes="0;.02;.96;1" dur="12s" repeatCount="indefinite"/>
+<text x="20" y="28" font-size="12" fill="#5f636b">fiber per day</text>
+<path d="M40 230H330" stroke="#e9eaed" stroke-width="1.6"/>
+<path d="M40 117H326" stroke="#c2456f" stroke-width="1.4" stroke-dasharray="4 4"/><text x="330" y="121" font-size="10" fill="#c2456f">women 25 g</text>
+<path d="M40 59H326" stroke="#3569b0" stroke-width="1.4" stroke-dasharray="4 4"/><text x="330" y="63" font-size="10" fill="#3569b0">men 38 g</text>
+<rect x="55" y="167" width="30" height="63" rx="5" fill="#9aa0aa"/>
+<rect x="95" y="230" width="30" height="0" rx="5" fill="#1d9e75"><animate attributeName="height" values="0;0;81;81" keyTimes="0;.30;.35;1" dur="12s" repeatCount="indefinite"/><animate attributeName="y" values="230;230;149;149" keyTimes="0;.30;.35;1" dur="12s" repeatCount="indefinite"/></rect>
+<rect x="135" y="230" width="30" height="0" rx="5" fill="#1d9e75"><animate attributeName="height" values="0;0;99;99" keyTimes="0;.37;.42;1" dur="12s" repeatCount="indefinite"/><animate attributeName="y" values="230;230;131;131" keyTimes="0;.37;.42;1" dur="12s" repeatCount="indefinite"/></rect>
+<rect x="175" y="230" width="30" height="0" rx="5" fill="#1d9e75"><animate attributeName="height" values="0;0;117;117" keyTimes="0;.44;.49;1" dur="12s" repeatCount="indefinite"/><animate attributeName="y" values="230;230;113;113" keyTimes="0;.44;.49;1" dur="12s" repeatCount="indefinite"/></rect>
+<rect x="215" y="230" width="30" height="0" rx="5" fill="#1d9e75"><animate attributeName="height" values="0;0;135;135" keyTimes="0;.51;.56;1" dur="12s" repeatCount="indefinite"/><animate attributeName="y" values="230;230;95;95" keyTimes="0;.51;.56;1" dur="12s" repeatCount="indefinite"/></rect>
+<rect x="255" y="230" width="30" height="0" rx="5" fill="#1d9e75"><animate attributeName="height" values="0;0;153;153" keyTimes="0;.58;.63;1" dur="12s" repeatCount="indefinite"/><animate attributeName="y" values="230;230;77;77" keyTimes="0;.58;.63;1" dur="12s" repeatCount="indefinite"/></rect>
+<rect x="295" y="230" width="30" height="0" rx="5" fill="#0f6e56"><animate attributeName="height" values="0;0;171;171" keyTimes="0;.65;.70;1" dur="12s" repeatCount="indefinite"/><animate attributeName="y" values="230;230;59;59" keyTimes="0;.65;.70;1" dur="12s" repeatCount="indefinite"/></rect>
+<g font-size="9.5" fill="#8a8f98" text-anchor="middle"><text x="70" y="246">now</text><text x="110" y="246">wk 1</text><text x="150" y="246">wk 2</text><text x="190" y="246">wk 3</text><text x="230" y="246">wk 4</text><text x="270" y="246">wk 5</text><text x="310" y="246">wk 6</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;1;1;0;0" keyTimes="0;.05;.22;.27;1" dur="12s" repeatCount="indefinite"/><path d="M70 162V66" stroke="#d85a30" stroke-width="2.4" stroke-dasharray="5 4"/><path d="M62 74L70 62L78 74" fill="none" stroke="#d85a30" stroke-width="2.4" stroke-linejoin="round"/><rect x="90" y="86" width="156" height="26" rx="8" fill="#ffe3d0" stroke="#d85a30" stroke-width="1.4"/><text x="168" y="103" font-size="11" fill="#993c1d" text-anchor="middle">⚠ all at once → bloating</text></g>
+<text x="200" y="276" font-size="12.5" fill="#0f6e56" text-anchor="middle" opacity="0">+3–5 g a week · let your gut adapt<animate attributeName="opacity" values="0;0;1;1" keyTimes="0;.76;.80;1" dur="12s" repeatCount="indefinite"/></text>
+</g></svg>

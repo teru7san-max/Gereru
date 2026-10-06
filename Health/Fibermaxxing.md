@@ -22,8 +22,12 @@ created: 2026-10-06
 | 0:25 | Араас нь ус сайн ууна 💧 | Drink plenty of water along with it |
 | 0:30–0:37 | Эмэгтэй 25гр/өдөрт · Эрэгтэй 38гр/өдөрт | Daily target: women 25 g, men 38 g |
 
+![[fiber-ramp-up.svg]]
+
 > [!warning] Don't jump straight to the target
 > If you add a lot of fiber at once, you can get bloating, gas and cramps. Ramp up over several weeks and drink more water as you go.
+
+![[fiber-needs-water.svg]]
 
 ## The dish shown: bean & cabbage stir-fry 🥬🫘
 
@@ -47,7 +51,13 @@ A quick pan-fried slaw made with:
 - Bulgur
 - Blueberries / dark berries
 
+What a day could look like (grams are rough per-serving estimates):
+
+![[fiber-daily-target.svg]]
+
 Served alongside an everyday Mongolian meal: boiled mutton ribs, broth, potatoes, carrots and dumplings. The fiber sides are added *next to* normal food rather than replacing it.
+
+![[fiber-add-a-side.svg]]
 
 ## My takeaways
 

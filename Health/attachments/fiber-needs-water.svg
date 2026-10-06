@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" font-family="-apple-system, 'SF Pro Text', 'Helvetica Neue', sans-serif">
+<title>Dry fiber gets stuck in the gut; with water it softens into a gel and moves through smoothly</title>
+<g><animate attributeName="opacity" values="0;1;1;0" keyTimes="0;.02;.96;1" dur="12s" repeatCount="indefinite"/>
+<text x="20" y="28" font-size="12" fill="#5f636b">fiber in the gut</text>
+<rect x="30" y="150" width="340" height="60" rx="30" fill="#fbeef2" stroke="#e8739e" stroke-width="1.8"/>
+<path d="M370 180h18M382 174l6 6-6 6" fill="none" stroke="#e8739e" stroke-width="1.6" stroke-linecap="round"/>
+<g transform="translate(60 180)"><animateTransform attributeName="transform" type="translate" values="60 180;140 180;140 180" keyTimes="0;.18;1" dur="12s" repeatCount="indefinite"/><animate attributeName="opacity" values="1;1;0;0" keyTimes="0;.52;.56;1" dur="12s" repeatCount="indefinite"/><path d="M0-16L5-10L13-12L11-4L17 2L10 6L11 14L3 11L-3 17L-6 9L-14 11L-11 3L-17-2L-10-6L-12-14L-4-10Z" fill="#f6c99b" stroke="#ba7517" stroke-width="1.6" stroke-linejoin="round"/></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0" keyTimes="0;.20;.24;.44;.48;1" dur="12s" repeatCount="indefinite"/><rect x="160" y="108" width="120" height="26" rx="8" fill="#fff0c2" stroke="#ba7517" stroke-width="1.4"/><text x="220" y="125" font-size="11" fill="#633806" text-anchor="middle">⚠ dry → stuck</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0" keyTimes="0;.44;.47;.58;.62;1" dur="12s" repeatCount="indefinite"/>
+<text x="250" y="60" font-size="12" fill="#3569b0">drink water</text>
+<g><animateTransform attributeName="transform" type="translate" values="120 40;120 40;120 165" keyTimes="0;.46;.58" dur="12s" repeatCount="indefinite"/><path d="M0-10C4-4 7 0 7 4a7 7 0 0 1-14 0c0-4 3-8 7-14Z" fill="#b5d4f4" stroke="#3569b0" stroke-width="1.4"/></g>
+<g><animateTransform attributeName="transform" type="translate" values="145 30;145 30;145 160" keyTimes="0;.48;.58" dur="12s" repeatCount="indefinite"/><path d="M0-10C4-4 7 0 7 4a7 7 0 0 1-14 0c0-4 3-8 7-14Z" fill="#b5d4f4" stroke="#3569b0" stroke-width="1.4"/></g>
+<g><animateTransform attributeName="transform" type="translate" values="170 45;170 45;170 168" keyTimes="0;.50;.58" dur="12s" repeatCount="indefinite"/><path d="M0-10C4-4 7 0 7 4a7 7 0 0 1-14 0c0-4 3-8 7-14Z" fill="#b5d4f4" stroke="#3569b0" stroke-width="1.4"/></g>
+</g>
+<g opacity="0" transform="translate(140 180)"><animate attributeName="opacity" values="0;0;1;1" keyTimes="0;.54;.58;1" dur="12s" repeatCount="indefinite"/><animateTransform attributeName="transform" type="translate" values="140 180;140 180;330 180;330 180" keyTimes="0;.64;.84;1" dur="12s" repeatCount="indefinite"/><circle r="14" fill="#d8f3e4" stroke="#1d9e75" stroke-width="2"><animate attributeName="r" values="14;14;21;21" keyTimes="0;.56;.63;1" dur="12s" repeatCount="indefinite"/></circle><path d="M-8-3q4-4 8 0t8 0M-8 5q4-4 8 0t8 0" fill="none" stroke="#5dcaa5" stroke-width="1.6"/></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;1;1" keyTimes="0;.84;.87;1" dur="12s" repeatCount="indefinite"/><rect x="232" y="108" width="128" height="26" rx="8" fill="#d8f3e4"/><text x="296" y="125" font-size="11" fill="#0f6e56" text-anchor="middle">✓ soft gel, moves</text></g>
+<text x="200" y="262" font-size="12.5" fill="#3569b0" text-anchor="middle" opacity="0">more fiber → drink more water 💧<animate attributeName="opacity" values="0;0;1;1" keyTimes="0;.88;.91;1" dur="12s" repeatCount="indefinite"/></text>
+</g></svg>
