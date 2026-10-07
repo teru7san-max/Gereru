@@ -1,0 +1,32 @@
+filters:
+  and:
+    - collection == "books"
+formulas:
+  read: if(status == "Read", "✅", "—")
+properties:
+  note.title:
+    displayName: Title
+  formula.read:
+    displayName: READ?
+views:
+  - type: cards
+    name: Cover Gallery
+    image: note.cover
+    order:
+      - title
+      - author
+      - category
+      - rating
+      - pages
+      - pdf
+      - formula.read
+  - type: table
+    name: Table
+    order:
+      - title
+      - author
+      - category
+      - status
+      - rating
+      - pages
+      - formula.read
