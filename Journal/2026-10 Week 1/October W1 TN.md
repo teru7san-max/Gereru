@@ -12,9 +12,16 @@ Week 1 (10.1–10.7) laid out as 82×116 mm traveler's-notebook cards in the sty
 - **PDF to print (A4, 4 cards per sheet, crop marks, sheets in reverse order):** [[October_2026_W1_TN_print_A4_reversed.pdf]]. Print at 100% and check the 90 mm scale bar.
 - **HTML:** `week1-tn.html` (open in a browser)
 
-28 pages: cover · weekly average ×2 · habit grid · XP journey · XP quest board · 7 day cards + 5 gym cards · best moments ×3 · Σ totals · achievements · what I lacked ×2 · week 2 quests · week 2 XP log · week 1 cleared.
+20 pages, 10.1–10.7 only, in three sections:
 
-## What I lacked (p.24–25)
+| # | Section | Pages |
+|---|---------|-------|
+| — | Cover: LV, XP and contents | 1 |
+| 1 | **Дүгнэлт / Summary**: weekly average ×2, habit grid, XP rules | 2–5 |
+| 2 | **Өдөр бүр / Day by day**: a day card for each day, followed by its gym card | 6–17 |
+| 3 | **Дутсан зүйл / What I lacked**: XP left on the table, days hit, week 2 quests | 18–20 |
+
+## What I lacked (p.18–19)
 
 Earned **2,640 of 7,900 XP (33%)** the quest board could pay.
 

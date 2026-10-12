@@ -155,13 +155,6 @@ SESSIONS = {
 KIND = {"push": ("PUSH DAY", "#f3c24f", "#7a5410"), "pull": ("PULL DAY", "#8fc0ea", "#1f4f86"),
         "leg": ("LEG DAY", "#f6b77c", "#8a3f12")}
 
-MOMENTS = [("10.1-2", "10.1", "аниме үзсэн орой"), ("10.2-2", "10.2", "кардио · 30:08"),
-           ("10.2-3", "10.2", "нуруу хийсэн өдөр"), ("10.3-1", "10.3", "юмаа хийж суусан"),
-           ("10.3-2", "10.3", "нохойтой таарсан"), ("10.3-8", "10.3", "орой нь жимдсэн"),
-           ("10.4-3", "10.4", "эгчийнд явах замд"), ("10.4-4", "10.4", "эгчийнд"),
-           ("10.4-5", "10.4", "кино үзсэн"), ("10.5-2", "10.5", "Kaide · хичээл"),
-           ("10.6-3", "10.6", "хүйтэн өдөр · жим"), ("10.7-1", "10.7", "сагс · амралт дууслаа")]
-
 # ───────────────────────────── pixel icons ─────────────────────────────
 PAL = {"K": "#3a2a1f", "W": "#fff9ec", "R": "#d0453a", "O": "#e8862e", "Y": "#f2c443", "G": "#5c9a3c",
        "g": "#9cc65a", "B": "#4a78c0", "b": "#9cc0ea", "P": "#8a5cb8", "N": "#8a5a35", "n": "#c48a54",
@@ -370,9 +363,38 @@ def qstate(day, key):
     return v, "full"
 
 
+SECTIONS = [  # (number, mongolian, english, first page key, last page key)
+    ("1", "ДҮГНЭЛТ", "SUMMARY", "avg1", "board"),
+    ("2", "ӨДӨР БҮР", "DAY BY DAY", "10.1", "10.7"),
+    ("3", "ДУТСАН ЗҮЙЛ", "WHAT I LACKED", "lack1", "next"),
+]
+
+
+def section_of(page):
+    for n, mn, en, a, z in SECTIONS:
+        if PAGE_NO[a] <= page <= PAGE_NO[z]:
+            return f"{n} · {mn}"
+    return ""
+
+
 def card(body, page, cls=""):
+    sec = section_of(page)
+    left = f"{MONTH} · {sec}" if sec else MONTH
     return (f'<section class="card {cls}">{body}'
-            f'<div class="foot"><span>{MONTH}</span><span>{page}</span></div></section>')
+            f'<div class="foot"><span>{left}</span><span>{page}</span></div></section>')
+
+
+def contents():
+    what = {"1": "weekly average · habit grid · XP rules", "2": "day card + gym card for each day",
+            "3": "XP left on the table · days hit · week 2 quests"}
+    rows = ""
+    for n, mn, en, a, z in SECTIONS:
+        rows += (f'<div class="toc"><span class="tn">{n}</span><div><b>{mn} <small>{en}</small></b>'
+                 f'<em>{what[n]}</em></div><span class="tp">p.{PAGE_NO[a]}–{PAGE_NO[z]}</span></div>')
+        if n == "2":
+            rows += '<div class="tocdays">' + "".join(
+                f'<span>{d["d"]}<small>p.{PAGE_NO[d["d"]]}</small></span>' for d in DAYS) + "</div>"
+    return f'<div class="box tocbox"><div class="nh">{icon("notes")}CONTENTS</div>{rows}</div>'
 
 
 def hdr(ic, title, right=""):
@@ -421,13 +443,7 @@ def p_cover():
     {segbar(lv_frac, "#4a78c0", 20)}
     <div class="mut">{TOTAL_XP % 1000} / 1,000 → LV 4</div></div>
 </div>
-<div class="grid2">
-  <div class="box stat">{icon("dumbbell")}<small>GYM</small><b>5 <em>/ 7 days</em></b></div>
-  <div class="box stat">{icon("shoe")}<small>STEPS / DAY</small><b>10,511</b></div>
-  <div class="box stat">{icon("moon")}<small>SLEEP / NIGHT</small><b>7h12m</b></div>
-  <div class="box stat">{icon("gem")}<small>TOTAL XP</small><b>{TOTAL_XP:,}</b></div>
-</div>
-<div class="cnote">10.1 → 10.7 · 7 days logged · 5 gym sessions · 2 sport · 30 snapshots · what I lacked → p.{PAGE_NO["lack1"]}</div>'''
+{contents()}'''
     return card(body, 1, "cover")
 
 
@@ -540,34 +556,6 @@ def p_habits():
     return card(body, 4)
 
 
-def p_journey():
-    W, H = 70, 34
-    bw = W / 7
-    bars = []
-    for i, d in enumerate(DAYS):
-        n = d["xp"] // 50
-        for b in range(n):
-            col = "#2f5e9e" if d["xp"] >= 500 else ("#4a78c0" if b % 2 else "#6f97d6")
-            bars.append(f'<rect x="{i * bw + 1.8:.2f}" y="{H - 3 - (b + 1) * 2.4:.2f}" width="{bw - 3.6:.2f}" height="2.1" fill="{col}"/>')
-        bars.append(f'<text x="{i * bw + bw / 2:.2f}" y="{H - 4.2 - n * 2.4:.2f}" text-anchor="middle" class="v">{d["xp"]}</text>')
-        bars.append(f'<text x="{i * bw + bw / 2:.2f}" y="{H}" text-anchor="middle">{d["d"]}</text>')
-    grid = "".join(f'<line x1="0" x2="{W}" y1="{H - 3 - v / 50 * 2.4:.2f}" y2="{H - 3 - v / 50 * 2.4:.2f}" '
-                   f'stroke="#d8c7a6" stroke-width=".15"/><text x="-1" y="{H - 2.4 - v / 50 * 2.4:.2f}" text-anchor="end">{v}</text>'
-                   for v in (0, 200, 400, 600))
-    chart = (f'<div class="box chartbox"><svg class="xchart" viewBox="-6 0 {W + 6} {H + 1}" shape-rendering="crispEdges">'
-             f'{grid}{"".join(bars)}</svg></div>')
-    src = sorted([(qxp(k), lab, ic) for k, lab, mn, ic in QUESTS], reverse=True)
-    mx = src[0][0]
-    srows = "".join(f'<div class="src">{icon(ic)}<span>{lab}</span><i><b style="width:{v / mx * 100:.0f}%"></b></i>'
-                    f'<em>{v:,}</em></div>' for v, lab, ic in src)
-    top = sorted(DAYS, key=lambda d: -d["xp"])[:3]
-
-    def top_icons(d):
-        return "".join(icon(dict((k, ic) for k, _, _, ic in QUESTS)[k]) for k in d["q"])
-    trows = "".join(f'<div class="box topday"><b>{d["d"]} · +{d["xp"]} XP</b><span>{top_icons(d)}</span></div>' for d in top)
-    body = (hdr("gem", "XP JOURNEY", f"LV 3 · {TOTAL_XP:,} XP") + chart +
-            f'<div class="sub">XP BY SOURCE</div>{srows}<div class="sub">TOP XP DAYS</div>{trows}')
-    return card(body, 5)
 
 
 def p_board():
@@ -734,53 +722,10 @@ def p_ex(day):
     return card(body, PAGE_NO[day + "x"], "exday")
 
 
-def p_moments(part):
-    items = MOMENTS[(part - 1) * 4: part * 4]
-    tilt = [-1.6, 1.2, 1.4, -1.1]
-    pol = "".join(f'<div class="pol" style="transform:rotate({tilt[i]}deg)"><img src="photos/{f}.jpg">'
-                  f'<div class="cap"><b>{dd}</b> {c}</div></div>' for i, (f, dd, c) in enumerate(items))
-    body = hdr("camera", "BEST MOMENTS", f"{part} / 3") + f'<div class="pols">{pol}</div>'
-    return card(body, PAGE_NO[f"m{part}"])
 
 
-def p_totals():
-    srows = "".join(f'<tr><td>{d["d"]}</td><td>{d["bed_s"]}</td><td>{d["wake_s"]}</td><td>{d["hrs"]}</td>'
-                    f'<td class="{"good" if d["score"] >= 70 else "meh"}">{d["score"]}</td></tr>' for d in DAYS)
-    mx = max(d["spent"] for d in DAYS)
-    sp = "".join(f'<div class="srow"><span>{d["d"]}</span><i><b style="width:{d["spent"] / mx * 100:.0f}%;'
-                 f'background:{"#5c9a3c" if d["spent"] <= 80 else "#c4473a"}"></b><s style="left:{80 / mx * 100:.0f}%"></s></i>'
-                 f'<em>¥{d["spent"]}</em></div>' for d in DAYS)
-    shops = [("西西弗", "books · café", 2, 106), ("好想来", "snacks", 4, 102), ("KFC", "food", 2, 59),
-             ("话费", "phone", 1, 38), ("打车", "taxi", 1, 28)]
-    shop = "".join(f'<div class="srow shop"><span>{n} <small>×{c}</small></span><i><b style="width:{v / 106 * 100:.0f}%;'
-                   f'background:#b5652b"></b></i><em>¥{v}</em></div>' for n, k, c, v in shops)
-    body = (hdr("chest", "WEEK 1 Σ", "totals") +
-            f'<div class="tot2"><div class="box"><div class="nh">{icon("moon")}SLEEP LOG</div>'
-            f'<table class="slog"><tr><th>day</th><th>bed</th><th>wake</th><th>hrs</th><th>sc</th></tr>{srows}'
-            f'<tr class="avg"><td>Σ</td><td>05:46</td><td>13:06</td><td>7h12</td><td>68</td></tr></table></div>'
-            f'<div class="col"><div class="box mini">{icon("shoe")}<small>STEPS</small><b>{STEPS:,}</b><em>avg 10.5k · 6 / 7 over 10k</em></div>'
-            f'<div class="box mini">{icon("flame")}<small>BURN</small><b>{BURN:,}<em> kcal</em></b><em>avg 669 · peak 824</em></div>'
-            f'<div class="box mini">{icon("apple")}<small>EATEN</small><b>2,953<em> /day</em></b><em>5 logged · P 121g</em></div></div></div>'
-            f'<div class="box spent"><div class="nh">{icon("coin")}SPENT ¥{SPENT} · ≈ ¥103 / day · line = ¥80</div>{sp}</div>'
-            f'<div class="box spent"><div class="nh">{icon("coin")}TOP PLACES · from the receipts listed</div>{shop}</div>')
-    return card(body, PAGE_NO["tot"])
 
 
-def p_achieve():
-    ach = [("star", "Pull-ups 17 in one set", "10.6 · 17 + 13 = 30"), ("star", "Pec fly 145 lb × 8", "10.5 · up from 95 lb"),
-           ("star", "Squat 110 × 6", "10.3 · leg day"), ("shoe", "Peak 12.8k steps", "10.3"),
-           ("flame", "Peak burn 824 kcal", "10.3"), ("moon", "Best sleep score 77", "10.2 · 8h23"),
-           ("coin", "Cheapest day ¥35", "10.1"), ("pullup", "30 pull-ups × 3 days", "10.1 · 10.5 · 10.6")]
-    a = "".join(f'<div class="box ach">{icon(i)}<div><b>{t}</b><small>{s}</small></div></div>' for i, t, s in ach)
-    nums = [("gem", f"{TOTAL_XP:,}", "XP earned"), ("shoe", "73,577", "steps"), ("flame", f"{BURN:,}", "kcal burned"),
-            ("coin", "¥718", "spent"), ("dumbbell", "5", "gym sessions"), ("ball", "2", "sport days"),
-            ("pushup", "200", "push-ups"), ("camera", "30", "snapshots")]
-    n = "".join(f'<div class="box num">{icon(i)}<b>{v}</b><small>{l}</small></div>' for i, v, l in nums)
-    body = (hdr("trophy", "WEEK 1 Σ", "achievements") + f'<div class="achs">{a}</div>'
-            f'<div class="sub">WEEK IN NUMBERS</div><div class="nums">{n}</div>'
-            f'<div class="bl"><div class="box best">{icon("heart")}<small>BEST DAYS (XP)</small><b>10.6 +570 · 10.2 +500</b></div>'
-            f'<div class="box best">{icon("leaf")}<small>LOWEST</small><b>10.4 · rest</b></div></div>')
-    return card(body, PAGE_NO["ach"])
 
 
 def p_next():
@@ -802,19 +747,6 @@ def p_next():
     return card(body, PAGE_NO["next"])
 
 
-def p_clear():
-    body = f'''
-<div class="cover-art clear">{scene("dusk")}
-  <div class="sign blue"><b>WEEK 1</b><b>CLEARED!</b></div></div>
-<div class="grid2 cl">
-  <div class="box stat">{icon("gem")}<b>{TOTAL_XP:,} XP · LV 3</b></div>
-  <div class="box stat">{icon("check")}<b>40% quests / day</b></div>
-  <div class="box stat">{icon("dumbbell")}<b>5 gym sessions</b></div>
-  <div class="box stat">{icon("shoe")}<b>73,577 steps</b></div>
-</div>
-<div class="quote">“Амралт дууслаа даа.” — 10.7</div>
-<div class="cnote">to be continued in week 2 …</div>'''
-    return card(body, PAGE_NO["clear"], "cover")
 
 
 # what was missing: earned XP vs the most each quest could pay this week
@@ -879,65 +811,30 @@ def p_lack2():
     return card(body, PAGE_NO["lack2"])
 
 
-def p_log():
-    days = [("10.8", "THU"), ("10.9", "FRI"), ("10.10", "SAT"), ("10.11", "SUN"), ("10.12", "MON"),
-            ("10.13", "TUE"), ("10.14", "WED")]
-    keys = QUESTS + LOCKED
-    head = "".join(f"<th>{icon(ic)}</th>" for _, _, _, ic in keys)
-    rows = "".join(f'<tr><td class="dd">{d}<small>{w}</small></td>' + "".join('<td><span class="cb"></span></td>' for _ in keys)
-                   + '<td class="xpw"></td></tr><tr class="nl"><td></td><td colspan="12"></td></tr>' for d, w in days)
-    body = (hdr("notes", "WEEK 2 XP LOG", "write it down") +
-            f'<table class="wlog"><tr><th>day</th>{head}<th>XP</th></tr>{rows}</table>'
-            f'<div class="box wsum"><span>Σ week 2</span><i></i><span>XP · LV 3 → 4 needs 360</span></div>')
-    return card(body, PAGE_NO["log"])
 
 
 # page order
-ORDER = ["cover", "avg1", "avg2", "habits", "journey", "board"]
+ORDER = ["cover", "avg1", "avg2", "habits", "board"]
 for d in DAYS:
     ORDER.append(d["d"])
     if d["d"] in SESSIONS:
         ORDER.append(d["d"] + "x")
-ORDER += ["m1", "m2", "m3", "tot", "ach", "lack1", "lack2", "next", "log", "clear"]
+ORDER += ["lack1", "lack2", "next"]
 for i, k in enumerate(ORDER, 1):
     PAGE_NO[k] = i
 
 
 def build_cards():
+    pages = {"cover": p_cover, "avg1": p_avg1, "avg2": p_avg2, "habits": p_habits, "board": p_board,
+             "lack1": p_lack1, "lack2": p_lack2, "next": p_next}
     out = []
     for k in ORDER:
-        if k == "cover":
-            out.append(p_cover())
-        elif k == "avg1":
-            out.append(p_avg1())
-        elif k == "avg2":
-            out.append(p_avg2())
-        elif k == "habits":
-            out.append(p_habits())
-        elif k == "journey":
-            out.append(p_journey())
-        elif k == "board":
-            out.append(p_board())
+        if k in pages:
+            out.append(pages[k]())
         elif k.endswith("x"):
             out.append(p_ex(k[:-1]))
-        elif k[0] == "1":
+        else:
             out.append(p_day(next(d for d in DAYS if d["d"] == k)))
-        elif k in ("m1", "m2", "m3"):
-            out.append(p_moments(int(k[1])))
-        elif k == "tot":
-            out.append(p_totals())
-        elif k == "ach":
-            out.append(p_achieve())
-        elif k == "lack1":
-            out.append(p_lack1())
-        elif k == "lack2":
-            out.append(p_lack2())
-        elif k == "log":
-            out.append(p_log())
-        elif k == "next":
-            out.append(p_next())
-        elif k == "clear":
-            out.append(p_clear())
     return out
 
 
