@@ -1,0 +1,412 @@
+{
+ "_help": "One week of the TN journal. Edit this file, then run: python3 ../_tn/build.py week1.json --pdf",
+ "month": "OCTOBER",
+ "year": 2026,
+ "week": 1,
+ "chapter": 10,
+ "range": "10.1 – 10.7",
+ "pdf_name": "October_2026_W1_TN",
+ "xp_before_week": 0,
+ "totals_from_phone": {
+  "steps": 73577,
+  "spent": 718
+ },
+ "locked_quests": ["bike", "focus"],
+ "goals": {
+  "burn_per_day": 700,
+  "kcal_line": 2400,
+  "protein_g": 150,
+  "gym_sessions": 5,
+  "spend_per_day": 80
+ },
+ "days": [
+  {
+   "date": "10.1",
+   "dow": "THU",
+   "photos": 3,
+   "journal": "Мэдэхгүйээ уул нь сарыг ууж эхлүүлэхгүй гэж бодож байгаад л уучихлаа даа хөөрхий. <b>Хулан, Золоо, тэгээд Төгөлдөр</b> байсан байхаа. <r>Дэнисийн төрсөн өдөр</r> болсон юм байна, <g>жимдээ</g> явчихаад иртэл шүү.",
+   "chips": [["heart", "Дэнис b-day"]],
+   "steps": 10400,
+   "burn": 651,
+   "spent": 35,
+   "spent_items": "一团火 ¥21 · 悦生活 ¥12",
+   "bed": "07:00",
+   "wake": "13:05",
+   "sleep": "5h54",
+   "sleep_score": 64,
+   "kcal": 4372,
+   "macros": [180, 539, 82],
+   "sport": null,
+   "bike_km": 0,
+   "focus_h": 0
+  },
+  {
+   "date": "10.2",
+   "dow": "FRI",
+   "photos": 5,
+   "journal": "Аймар <g>жимд</g> явсан өдөр, нуруу хийсэн, тэгээд <g>кардио</g>.",
+   "chips": [["dumbbell", "back day"], ["ball", "cardio"]],
+   "steps": 11900,
+   "burn": 803,
+   "spent": 126,
+   "spent_items": "好想来 ¥35 · 提现 ¥30 · KFC ¥29",
+   "bed": "09:33",
+   "wake": "18:06",
+   "sleep": "8h23",
+   "sleep_score": 77,
+   "kcal": 2647,
+   "macros": [83, 309, 109],
+   "sport": "cardio",
+   "bike_km": 0,
+   "focus_h": 0
+  },
+  {
+   "date": "10.3",
+   "dow": "SAT",
+   "photos": 8,
+   "journal": "Юмаа хийж жаахан суусан, орой нь <g>жимдсэн</g>.",
+   "chips": [],
+   "steps": 12800,
+   "burn": 824,
+   "spent": 156,
+   "spent_items": "card ¥33 · KFC ¥30 · 凯德 ¥28 · 西西弗 ¥26",
+   "bed": "04:36",
+   "wake": "11:32",
+   "sleep": "6h50",
+   "sleep_score": 66,
+   "kcal": 2630,
+   "macros": [115, 240, 134],
+   "sport": null,
+   "bike_km": 0,
+   "focus_h": 0
+  },
+  {
+   "date": "10.4",
+   "dow": "SUN",
+   "photos": 5,
+   "journal": "Өдөр сэрээд <r>эгчийнд</r> очсон, <r>кино</r> үзээд юм идээд л өнгөрлөө дөө.",
+   "chips": [["pin", "эгчийнд"], ["film", "кино"]],
+   "steps": 4600,
+   "burn": 575,
+   "spent": 100,
+   "spent_items": "好想来 ¥31 · 打车 ¥28 · 便利店 ¥24",
+   "bed": "06:19",
+   "wake": "12:12",
+   "sleep": "5h51",
+   "sleep_score": 64,
+   "kcal": null,
+   "macros": null,
+   "sport": null,
+   "bike_km": 0,
+   "focus_h": 0
+  },
+  {
+   "date": "10.5",
+   "dow": "MON",
+   "photos": 4,
+   "journal": "<b>Золоо, Хулан</b> хоёртой <r>Kaide</r> орж хичээл хийсэн, орой нь <g>жимдээ</g> явсан.",
+   "chips": [["pin", "Kaide"]],
+   "steps": 12500,
+   "burn": 687,
+   "spent": 115,
+   "spent_items": "西西弗 ¥80 (2×) · 好想来 ¥23",
+   "bed": "03:15",
+   "wake": "11:56",
+   "sleep": "8h32",
+   "sleep_score": 65,
+   "kcal": null,
+   "macros": null,
+   "sport": null,
+   "bike_km": 0,
+   "focus_h": 0
+  },
+  {
+   "date": "10.6",
+   "dow": "TUE",
+   "photos": 4,
+   "journal": "Хүйтэн өдөр байсан, орой <g>жимдээ</g> явсан, хүмүүсийн аймар түүх сонссон хаха.",
+   "chips": [["snow", "хүйтэн"]],
+   "steps": 10100,
+   "burn": 542,
+   "spent": 53,
+   "spent_items": "书店 ¥16 · 瑞幸 ¥15 · 好想来 ¥13",
+   "bed": "04:21",
+   "wake": "12:07",
+   "sleep": "7h45",
+   "sleep_score": 73,
+   "kcal": 2681,
+   "macros": [156, 409, 48],
+   "sport": null,
+   "bike_km": 0,
+   "focus_h": 0
+  },
+  {
+   "date": "10.7",
+   "dow": "WED",
+   "photos": 1,
+   "journal": "Юмаа хийж байгаад гарч <o>сагсдсан</o> юм байна. Амралт дууслаа даа.",
+   "chips": [["ball", "сагс"]],
+   "steps": 11300,
+   "burn": 598,
+   "spent": 132,
+   "spent_items": "话费 ¥38 · 家家悦 ¥31 · 赵一鸣 ¥18",
+   "bed": "05:19",
+   "wake": "12:45",
+   "sleep": "7h11",
+   "sleep_score": 70,
+   "kcal": 2433,
+   "macros": [72, 347, 92],
+   "sport": "basketball",
+   "bike_km": 0,
+   "focus_h": 0
+  }
+ ],
+ "sessions": {
+  "10.1": {
+   "kind": "push",
+   "rating": 8,
+   "sets": 21,
+   "exercises": [
+    {
+     "name": "Push-ups",
+     "rating": null,
+     "sets": [["BW", 30], ["BW", 20], ["BW", 10]]
+    },
+    {
+     "name": "Pull-ups",
+     "rating": null,
+     "sets": [["BW", 12], ["BW", 8], ["BW", 10]]
+    },
+    {
+     "name": "Pec fly",
+     "rating": 8.5,
+     "sets": [["38.5", 10], ["38.5", 8], ["38.5", 8]]
+    },
+    {
+     "name": "Incline bench",
+     "rating": 7.3,
+     "sets": [["80", 6], ["80", 8], ["80", 8]]
+    },
+    {
+     "name": "Lateral raise",
+     "rating": 7.6,
+     "sets": [["10+10", 20], ["10+10", 20], ["10+10", 20]]
+    },
+    {
+     "name": "Cable fly ①",
+     "rating": 8.6,
+     "sets": [["55lb", "15/15"], ["65lb", "12/12"]]
+    },
+    {
+     "name": "Cable fly ②",
+     "rating": 7.3,
+     "sets": [["35lb", "8/8"], ["35lb", "10/10"]]
+    },
+    {
+     "name": "DB sh. press",
+     "rating": 6.8,
+     "sets": [["20+20", 8], ["20+20", 12], ["20+20", 8]]
+    },
+    {
+     "name": "Rear delt",
+     "rating": 7.1,
+     "sets": [["28.5", 10]]
+    },
+    {
+     "name": "Tricep OH",
+     "rating": null,
+     "sets": [["75lb", 8], ["75lb", 10]]
+    },
+    {
+     "name": "Tricep 1-arm",
+     "rating": null,
+     "sets": [["35lb", "10/10"], ["35lb", "10/10"]]
+    }
+   ],
+   "notes": [["star", "30 pull-ups ✓ · chest, shoulders, triceps all hit"], ["star", "your own set avg 7.6 · best cable fly 8.6"], ["pen", "DB shoulder press felt weakest (6.8)"]]
+  },
+  "10.2": {
+   "kind": "pull",
+   "rating": 7,
+   "sets": 16,
+   "exercises": [
+    {
+     "name": "Push-ups",
+     "rating": null,
+     "sets": [["BW", 30]]
+    },
+    {
+     "name": "Pull-ups",
+     "rating": null,
+     "sets": [["BW", 10], ["BW", 10], ["BW", 7]]
+    },
+    {
+     "name": "Seated T-row",
+     "rating": null,
+     "sets": [["40", "10/10"], ["40", "10/10"], ["40", "10/10"]]
+    },
+    {
+     "name": "Wide grip",
+     "rating": null,
+     "sets": [["125lb", 8], ["125lb", 10], ["125lb", 8]]
+    },
+    {
+     "name": "Narrow grip",
+     "rating": null,
+     "sets": [["63.5", 10], ["63.5", 10]]
+    },
+    {
+     "name": "Back ext.",
+     "rating": null,
+     "sets": [["75", 6], ["50", 10]]
+    },
+    {
+     "name": "Seated curl",
+     "rating": null,
+     "sets": [["12.5", 8], ["12.5", 10]]
+    },
+    {
+     "name": "Stand DB curl",
+     "rating": null,
+     "sets": [["12.5", 10]]
+    },
+    {
+     "name": "Abs",
+     "rating": null,
+     "sets": [["20", 15], ["20", 15], ["20", 10]]
+    }
+   ],
+   "notes": [["star", "back, biceps and abs covered"], ["pen", "pull-ups 27 of 30 · 3 short"], ["star", "cardio after"]]
+  },
+  "10.3": {
+   "kind": "leg",
+   "rating": 6,
+   "sets": 9,
+   "exercises": [
+    {
+     "name": "Squat",
+     "rating": null,
+     "sets": [["110", 6], ["110", 4]]
+    },
+    {
+     "name": "Leg extension",
+     "rating": null,
+     "sets": [["70", 8], ["70", 10], ["70", 10]]
+    },
+    {
+     "name": "1-leg press",
+     "rating": null,
+     "sets": [["55", "12/12"], ["65", "12/12"]]
+    },
+    {
+     "name": "Abductor",
+     "rating": null,
+     "sets": [["100", 20], ["100", 20]]
+    }
+   ],
+   "notes": [["star", "squat 110 × 6 is strong"], ["pen", "only 9 sets"], ["pen", "no hamstring or calf work"], ["pen", "no push / pull-ups today"]]
+  },
+  "10.5": {
+   "kind": "push",
+   "rating": 8,
+   "sets": 16,
+   "exercises": [
+    {
+     "name": "Pull-ups",
+     "rating": null,
+     "sets": [["BW", 10], ["BW", 10], ["BW", 10]]
+    },
+    {
+     "name": "Push-ups",
+     "rating": null,
+     "sets": [["BW", 20], ["BW", 20], ["BW", 10]]
+    },
+    {
+     "name": "Pec fly",
+     "rating": null,
+     "sets": [["95lb", 10], ["105lb", 15], ["145lb", 8]]
+    },
+    {
+     "name": "Incline DB",
+     "rating": null,
+     "sets": [["35+35", 6], ["35+35", 6], ["35+35", 6]]
+    },
+    {
+     "name": "Lateral raise",
+     "rating": null,
+     "sets": [["10+10", 20], ["10+10", 20]]
+    },
+    {
+     "name": "Rear delt",
+     "rating": null,
+     "sets": [["28.5", 10], ["28.5", 10]]
+    },
+    {
+     "name": "Pushdown",
+     "rating": null,
+     "sets": [["105lb", 10], ["105lb", 10]]
+    },
+    {
+     "name": "Shoulder press",
+     "rating": null,
+     "sets": [["40", 10], ["40", 10]]
+    },
+    {
+     "name": "Cable fly low",
+     "rating": null,
+     "sets": [["55lb", 12], ["55lb", 12]]
+    }
+   ],
+   "notes": [["star", "pec fly up to 145 lb"], ["star", "every push muscle hit"], ["star", "30 pull-ups ✓ · 50 push-ups"]]
+  },
+  "10.6": {
+   "kind": "pull",
+   "rating": 7,
+   "sets": 13,
+   "exercises": [
+    {
+     "name": "Pull-ups",
+     "rating": null,
+     "sets": [["BW", 17], ["BW", 13]]
+    },
+    {
+     "name": "Push-ups",
+     "rating": null,
+     "sets": [["BW", 30], ["BW", 30]]
+    },
+    {
+     "name": "Narrow grip",
+     "rating": null,
+     "sets": [["38.5", 8], ["38.5", 8]]
+    },
+    {
+     "name": "Back ext.",
+     "rating": null,
+     "sets": [["45", 10], ["45", 10]]
+    },
+    {
+     "name": "1-arm lat",
+     "rating": null,
+     "sets": [["25", "10/10"], ["25", "10/10"]]
+    },
+    {
+     "name": "Cable pray",
+     "rating": null,
+     "sets": [["28", 10], ["28", 10]]
+    },
+    {
+     "name": "Incline curl",
+     "rating": null,
+     "sets": [["12.5", "10/10"], ["12.5", "10/10"], ["12.5", "8/8"]]
+    },
+    {
+     "name": "Hammer curl",
+     "rating": null,
+     "sets": [["12.5", "8/8"], ["12.5", "8/8"]]
+    }
+   ],
+   "notes": [["star", "pull-ups 17 + 13 ✓ · 60 push-ups"], ["pen", "rows were light, half the work was arms"]]
+  }
+ },
+ "next_week_extra": [["dumbbell", "Leg day + hamstring & calf", "fix from 10.3 note", 200]]
+}
