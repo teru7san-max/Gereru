@@ -11,12 +11,15 @@ created: 2026-10-12
 - **PDF, one card per page:** [[October_2026_W1_TN.pdf]]
 - **PDF to print (A4, 4 cards per sheet, crop marks, sheets in reverse order):** [[October_2026_W1_TN_print_A4_reversed.pdf]]. Print at 100% and check the 90 mm scale bar.
 
-| # | Section | Pages |
-|---|---------|-------|
-| — | Cover: LV, XP and contents | 1 |
-| 1 | **Дүгнэлт / Summary**: week at a glance, weekly average, habit grid, XP rules | 2–5 |
-| 2 | **Өдөр бүр / Day by day**: a day card for each day, followed by its gym card | 6–17 |
-| 3 | **Дутсан зүйл / What I lacked**: XP left on the table, days hit, week 2 quests | 18–20 |
+16 pages. Each fact appears on exactly one page:
+
+| Page | What it is |
+|------|------------|
+| 1 | Cover: LV, XP this week and contents |
+| 2 | **The week**: one grid of quests × days, showing each value coloured by done / half / missed, with XP per day and week totals |
+| 3 | **Quests**: each quest's rule, days hit, XP earned against the most it could pay, and XP missed, biggest gap first |
+| 4 | **W2 plan**: the 3 biggest gaps with tick boxes for 10.8–10.14, what to keep, and new quests |
+| 5–16 | **Days**: one card per day with photos, journal and one quest list (value, ✓ / ½ and XP). Gym days also get a gym card with sets and a ↑↓ trend against earlier in the week |
 
 ## How it's built
 

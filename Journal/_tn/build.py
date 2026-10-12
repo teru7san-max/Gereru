@@ -397,20 +397,25 @@ def scene(mode="day", W=164, H=96):
             f'shape-rendering="crispEdges" xmlns="http://www.w3.org/2000/svg">{"".join(out)}</svg>')
 
 
-# ───────────────────────────── helpers ─────────────────────────────
+# ───────────────────────────── page helpers ─────────────────────────────
+# Rule of this layout: every fact lives on exactly one page.
+#   p.2 the week   — what happened, day by day (values + quest result)
+#   p.3 quests     — the rules and what each quest paid vs could have paid
+#   p.4 plan       — the next week, built from the biggest gaps
+#   day / gym      — the detail behind one column of p.2
+import datetime
+
 W, S, PAGE_NO = {}, {}, {}
 MONTH = ""
-GOOD, MID, BAD = "#4f8a3a", "#d9822b", "#c4473a"
 
-
-def segbar(frac, color, segs=10):
-    frac = max(0.0, min(1.0, frac))
-    full = frac * segs
-    cells = []
-    for i in range(segs):
-        f = max(0.0, min(1.0, full - i))
-        cells.append(f'<i style="background:linear-gradient(90deg,{color} {f * 100:.0f}%,transparent {f * 100:.0f}%)"></i>')
-    return f'<span class="seg">{"".join(cells)}</span>'
+RULE = {"steps": "10k → 100 · 15k → 150", "food": "logged 50 · ≤2700 + P100 170 · ≤2500 + P150 200",
+        "sleep": "8h · score 80 · before 12A — 1 → 50 · 2 → 150 · 3 → 250", "gym": "session 200 · rated 9+ 250",
+        "sport": "cardio · basketball · run 100", "burn": "1000+ kcal 100", "pull": "30+ in a day 50",
+        "push": "100+ in a day 50", "spend": "≤ ¥80 50", "bike": "5km+ 50", "focus": "2h+ main work 200"}
+TARGET = {"steps": "10k steps every day", "food": "≤2500 kcal with 150g protein", "sleep": "Asleep before 12A, 8h+",
+          "gym": "Gym 5× · rate one 9+", "sport": "Sport 2+ days", "burn": "Burn 1000+ kcal once",
+          "pull": "30 pull-ups every gym day", "push": "100 push-ups in a day", "spend": "Spend ≤ ¥80 on 4 days",
+          "bike": "Bike 5km+", "focus": "Focus 2h+ on main work"}
 
 
 def state(d, q):
@@ -418,274 +423,198 @@ def state(d, q):
     if t is None:
         return 0, None
     xp, half = TIER[(q, t)]
-    return xp, "half" if half else "full"
+    return xp, "h" if half else "f"
 
 
-def checkbox(st):
-    return f'<span class="cb {st or ""}">{icon("check", "ck") if st else ""}</span>'
+def mark(st):
+    return {"f": '<i class="mk f">✓</i>', "h": '<i class="mk h">½</i>'}.get(st, '<i class="mk m"></i>')
 
 
-def sections():
-    D = W["days"]
-    return [("1", "ДҮГНЭЛТ", "SUMMARY", "glance", "board", "week at a glance · averages · habit grid · XP rules"),
-            ("2", "ӨДӨР БҮР", "DAY BY DAY", D[0]["date"], D[-1]["date"], "day card + gym card for each day"),
-            ("3", "ДУТСАН ЗҮЙЛ", "WHAT I LACKED", "lack1", "next", "XP left on the table · days hit · next week")]
-
-
-def section_of(page):
-    for n, mn, en, a, z, _ in sections():
-        if PAGE_NO[a] <= page <= PAGE_NO[z]:
-            return f"{n} · {mn}"
-    return ""
+def bar(frac, cls=""):
+    frac = max(0.0, min(1.0, frac))
+    return f'<span class="bar {cls}"><b style="width:{frac * 100:.0f}%"></b></span>'
 
 
 def card(body, key, cls=""):
-    page = PAGE_NO[key]
-    sec = section_of(page)
-    left = f"{MONTH} · {sec}" if sec else MONTH
     return (f'<section class="card {cls}">{body}'
-            f'<div class="foot"><span>{left}</span><span>{page}</span></div></section>')
+            f'<footer><span>{MONTH}</span><span>{PAGE_NO[key]}</span></footer></section>')
 
 
-def hdr(ic, title, right=""):
-    return f'<div class="hdr">{icon(ic)}<h1>{title}</h1><span class="r">{right}</span></div>'
+def title(ic, text, right=""):
+    return f'<h1>{icon(ic)}<span>{text}</span><small>{right}</small></h1>'
 
 
 def k(v):
     return f"{v / 1000:.1f}k"
 
 
-def wk():
-    return f'W{W["week"]}'
+def wk(offset=0):
+    return f'W{W["week"] + offset}'
 
 
-# ───────────────────────────── 1 · summary ─────────────────────────────
+def next_dates():
+    y = W["year"]
+    m, dd = map(int, W["days"][-1]["date"].split("."))
+    last = datetime.date(y, m, dd)
+    return [last + datetime.timedelta(days=i) for i in range(1, 8)]
+
+
+# ───────────────────────────── p.1 cover ─────────────────────────────
 def p_cover():
-    rows = ""
-    for n, mn, en, a, z, what in sections():
-        rows += (f'<div class="toc"><span class="tn">{n}</span><div><b>{mn} <small>{en}</small></b>'
-                 f'<em>{what}</em></div><span class="tp">p.{PAGE_NO[a]}–{PAGE_NO[z]}</span></div>')
-        if n == "2":
-            rows += '<div class="tocdays">' + "".join(
-                f'<span>{d["date"]}<small>p.{PAGE_NO[d["date"]]}</small></span>' for d in W["days"]) + "</div>"
+    toc = [("The week", "every quest, every day", "week"), ("Quests", "rules · what each one paid", "quests"),
+           (f'{wk(1)} plan', "three things to fix", "plan")]
+    rows = "".join(f'<li><b>{a}</b><em>{b}</em><i></i><span>{PAGE_NO[c]}</span></li>' for a, b, c in toc)
+    for d in W["days"]:
+        s = d["sess"]
+        tag = f'{s["kind"]} {s["rating"]}/10' if s else (d.get("sport") or "rest")
+        rows += f'<li class="dy"><b>{d["date"]} {d["dow"].title()}</b><em>{tag}</em><i></i><span>{PAGE_NO[d["date"]]}</span></li>'
     body = f'''
-<div class="cover-art">{scene("day")}
-  <div class="sign"><b>{W["month"]}</b><span>WEEK {W["week"]} · {W["range"]}</span></div>
-</div>
-<div class="subt">{icon("notes")} WEEKLY QUEST LOG · CHAPTER {W["chapter"]} · WEEK {W["week"]}</div>
-<div class="box lv">
-  <div class="lvbadge">LV {S["lv"]}</div>
-  <div class="lvinfo"><div class="big">{S["xp"]:,} XP <em class="mut">this week</em></div>
-    <div class="mut">avg {S["xp"] // S["n"]} / day · 1000 XP = 1 LV</div>
-    {segbar(S["into"] / 1000, "#4a78c0", 20)}
-    <div class="mut">{S["into"]} / 1,000 → LV {S["lv"] + 1}</div></div>
-</div>
-<div class="box tocbox"><div class="nh">{icon("notes")}CONTENTS</div>{rows}</div>'''
+<div class="art pf">{scene("day")}</div>
+<div class="ttl"><b>{W["month"]}</b><span>WEEK {W["week"]} · {W["range"]} · {W["year"]}</span></div>
+<div class="lvl"><span class="lvb">LV {S["lv"]}</span>
+  <div>{bar(S["into"] / 1000, "xp")}<small>{S["xp"]:,} XP this week · {S["into"]} / 1000 to LV {S["lv"] + 1}</small></div></div>
+<ul class="toc">{rows}</ul>'''
     return card(body, "cover", "cover")
 
 
-def p_glance():
-    D, g = W["days"], W["goals"]
-
-    def cell(v, cls):
-        return f'<td class="{cls}">{v}</td>'
-
-    def lvl(ok, mid):
-        return "g" if ok else ("m" if mid else "b")
-
-    rows = []
-
-    def row(ic, label, vals, avg):
-        rows.append(f'<tr><th>{icon(ic)}{label}</th>{"".join(vals)}<td class="av">{avg}</td></tr>')
-
-    row("gem", "XP", [cell(d["xp"], lvl(d["xp"] >= 400, d["xp"] >= 200)) for d in D], S["xp"] // S["n"])
-    row("check", "quests", [cell(f'{d["pct"]}%', lvl(d["pct"] >= 50, d["pct"] >= 30)) for d in D], f'{S["pct_avg"]}%')
-    row("shoe", "steps", [cell(k(d["steps"]), lvl(d["steps"] >= 10000, d["steps"] >= 7500)) for d in D], k(S["steps_avg"]))
-    row("flame", "burn", [cell(d["burn"], lvl(d["burn"] >= g["burn_per_day"], d["burn"] >= 550)) for d in D], S["burn_avg"])
-    row("moon", "sleep", [cell(d["sleep"], lvl(mins(d["sleep"]) >= 480, mins(d["sleep"]) >= 420)) for d in D], hm(S["sleep_avg"]))
-    row("heart", "score", [cell(d["sleep_score"], lvl(d["sleep_score"] >= 80, d["sleep_score"] >= 70)) for d in D], S["score_avg"])
-    row("sun", "asleep", [cell(d["bed"], lvl(clock(d["bed"]) <= 24, clock(d["bed"]) <= 26)) for d in D], S["bed_avg"])
-    row("apple", "kcal", [cell(f'{d["kcal"]:,}', lvl(d["kcal"] <= g["kcal_line"], d["kcal"] <= 2700)) if d.get("kcal")
-                          else cell("—", "n") for d in D], f'{S["kcal_avg"]:,}')
-    row("apple", "protein", [cell(f'{d["macros"][0]}g', lvl(d["macros"][0] >= g["protein_g"], d["macros"][0] >= 100))
-                             if d.get("kcal") else cell("—", "n") for d in D], f'{S["mac_avg"][0]}g')
-    row("coin", "spent", [cell(f'¥{d["spent"]}', lvl(d["spent"] <= g["spend_per_day"], d["spent"] <= 120)) for d in D],
-        f'¥{S["spent_avg"]}')
-    tr = []
-    for d in D:
-        s = d["sess"]
-        if s:
-            name, bg, fg = KIND[s["kind"]]
-            tr.append(f'<td class="kd" style="background:{bg};color:{fg}">{s["kind"].upper()}<small>{s["rating"]}/10</small></td>')
-        elif d.get("sport"):
-            tr.append(f'<td class="kd" style="background:#f9d2ad;color:#8a3f12">{d["sport"][:6].upper()}</td>')
-        else:
-            tr.append('<td class="kd n">rest</td>')
-    rows.append(f'<tr><th>{icon("dumbbell")}training</th>{"".join(tr)}<td class="av">{len(S["sessions"])}×</td></tr>')
-    head = "".join(f'<td>{d["date"]}<small>{d["dow"]}</small></td>' for d in D)
-    best = max(D, key=lambda d: d["xp"])
-    low = min(D, key=lambda d: d["xp"])
-    steady = max(W["active"], key=lambda q: qcount(W, q))
-    weak = min((q for q in W["active"] if q != "gym"), key=lambda q: qxp(W, q) - qmax(W, q))
-    body = (hdr("calendar", "WEEK AT A GLANCE", W["range"]) +
-            f'<table class="gl"><tr class="gh"><th></th>{head}<td class="av">avg</td></tr>{"".join(rows)}</table>'
-            f'<div class="legend"><i class="lg g"></i>on goal · <i class="lg m"></i>close · <i class="lg b"></i>off · — not logged</div>'
-            f'<div class="glb">'
-            f'<div class="box best">{icon("star")}<small>BEST DAY</small><b>{best["date"]} · +{best["xp"]} XP</b></div>'
-            f'<div class="box best">{icon("leaf")}<small>LOWEST</small><b>{low["date"]} · +{low["xp"]} XP</b></div>'
-            f'<div class="box best">{icon("check")}<small>MOST STEADY</small><b>{QLABEL[steady]} {qcount(W, steady)}/{S["n"]}</b></div>'
-            f'<div class="box best">{icon("target")}<small>WEAKEST</small><b>{QLABEL[weak]} −{qmax(W, weak) - qxp(W, weak):,} XP</b></div>'
-            f'</div>')
-    return card(body, "glance")
+# ───────────────────────────── p.2 the week ─────────────────────────────
+def cell(d, q):
+    s = d["sess"]
+    _, st = state(d, q)
+    cls = st or "m"
+    if q == "steps":
+        v, sub = k(d["steps"]), ""
+    elif q == "food":
+        v, sub = (f'{d["kcal"] / 1000:.1f}k', f'P{d["macros"][0]}') if d.get("kcal") else ("—", "")
+    elif q == "sleep":
+        v, sub = d["sleep"], str(d["sleep_score"])
+    elif q == "gym":
+        if not s:
+            return '<td class="x">·</td>'
+        v, sub = s["kind"].upper(), f'{s["rating"]}/10'
+    elif q == "sport":
+        v, sub = ((d["sport"][:6]), "") if d.get("sport") else ("—", "")
+    elif q == "burn":
+        v, sub = str(d["burn"]), ""
+    elif q == "pull":
+        v, sub = (str(d["pull"]) if d["pull"] else "—"), ""
+    elif q == "push":
+        v, sub = (str(d["push"]) if d["push"] else "—"), ""
+    elif q == "spend":
+        v, sub = f'¥{d["spent"]}', ""
+    elif q == "bike":
+        v, sub = f'{d.get("bike_km", 0)}km', ""
+    else:
+        v, sub = f'{d.get("focus_h", 0)}h', ""
+    return f'<td class="{cls}">{v}{f"<small>{sub}</small>" if sub else ""}</td>'
 
 
-def tile(color, ic, title, big, unit, lines, frac, pct_label):
-    return f'''<div class="tile"><div class="th" style="background:{color}">{icon(ic)}{title}</div>
-<div class="tb"><div class="big">{big}<em>{unit}</em></div>{lines}
-<div class="tbar">{segbar(frac, color, 10)}<b>{pct_label}</b></div></div></div>'''
-
-
-def tl(a, b):
-    return f'<div class="tl"><u>{a}</u></div><div class="tl">{b}</div>'
-
-
-def pct(f):
-    return f"{round(f * 100)}%"
-
-
-def p_avg():
-    D, g, n = W["days"], W["goals"], S["n"]
-    n7 = len(days_where(W, lambda d: mins(d["sleep"]) >= 420))
-    nb = len(days_where(W, lambda d: clock(d["bed"]) <= 24))
-    n10 = len(days_where(W, lambda d: d["steps"] >= 10000))
-    nburn = days_where(W, lambda d: d["burn"] >= g["burn_per_day"])
-    peak = max(D, key=lambda d: d["burn"])
-    nsp = len(days_where(W, lambda d: d["spent"] <= g["spend_per_day"]))
-    kinds = {}
-    for d in S["sessions"]:
-        kinds[d["sess"]["kind"]] = kinds.get(d["sess"]["kind"], 0) + 1
-    bestq = max(d["pct"] for d in D)
-    lowq = min(D, key=lambda d: d["pct"])
-    bs = S["best_sleep"]
-    t = [
-        tile("#5c9a3c", "moon", "SLEEP / NIGHT", hm(S["sleep_avg"]).replace("h", "h "), "m",
-             tl(f'sleep score {S["score_avg"]} / 100', f'best {bs["sleep_score"]} ({bs["date"]}) · 7h+ {n7}/{n}'),
-             S["sleep_avg"] / 480, pct(S["sleep_avg"] / 480)),
-        tile("#4a5aa8", "sun", "BED → WAKE", f'{S["bed_avg"]}→{S["wake_avg"]}', "",
-             tl("avg asleep → wake up", f"asleep before 12A · {nb}/{n}"), nb / n, pct(nb / n)),
-        tile("#3d78b8", "shoe", "STEPS / DAY", f'{S["steps_avg"]:,}', "",
-             tl("GOAL 10,000 / day", f'10k+ {n10}/{n} · total {S["steps_tot"]:,}'),
-             S["steps_avg"] / 10000, pct(S["steps_avg"] / 10000)),
-        tile("#8a5cb8", "flame", "BURN / DAY", S["burn_avg"], "kcal",
-             tl(f'GOAL {g["burn_per_day"]} kcal / day', f'{g["burn_per_day"]}+ {len(nburn)}/{n} · peak {peak["burn"]} ({peak["date"]})'),
-             S["burn_avg"] / g["burn_per_day"], pct(S["burn_avg"] / g["burn_per_day"])),
-        tile("#c4473a", "coin", "SPENT / DAY", f'¥{S["spent_avg"]}', "",
-             tl(f'GOAL ≤ ¥{g["spend_per_day"]} / day', f'within · {nsp}/{n} · total ¥{S["spent_tot"]:,}'),
-             min(1, g["spend_per_day"] / S["spent_avg"]), pct(min(1, g["spend_per_day"] / S["spent_avg"]))),
-        tile("#d9822b", "apple", "CALORIES / DAY", f'{S["kcal_avg"]:,}', "kcal",
-             tl(f'LINE {g["kcal_line"]:,} · {len(S["logged"])}/{n} logged',
-                f'P {S["mac_avg"][0]}g · C {S["mac_avg"][1]}g · F {S["mac_avg"][2]}g'),
-             min(1, g["kcal_line"] / max(S["kcal_avg"], 1)), pct(min(1, g["kcal_line"] / max(S["kcal_avg"], 1)))),
-        tile("#b5652b", "dumbbell", "GYM", len(S["sessions"]), f'/ {g["gym_sessions"]}',
-             tl(f'avg rating {S["rating_avg"]} / 10', " · ".join(f"{k_} ×{v}" for k_, v in kinds.items())),
-             len(S["sessions"]) / g["gym_sessions"], pct(len(S["sessions"]) / g["gym_sessions"])),
-        tile("#5c9a3c", "check", "QUESTS / DAY", S["pct_avg"], "%",
-             tl(f'best {bestq}% · ' + " ".join(d["date"] for d in D if d["pct"] == bestq),
-                f'lowest {lowq["pct"]}% ({lowq["date"]})'), S["pct_avg"] / 100, f'{S["pct_avg"]}%'),
-    ]
-    body = hdr("star", "WEEKLY AVERAGE", "% = how close to the goal") + f'<div class="tiles t8">{"".join(t)}</div>'
-    return card(body, "avg")
-
-
-def p_habits():
+def p_week():
     D, n = W["days"], S["n"]
-    cols = "".join(f'<th>{d["date"].split(".")[1]}<small>{d["dow"][0]}</small></th>' for d in D)
-    rows = []
-    for q in W["active"]:
-        cells = "".join(f"<td>{checkbox(state(d, q)[1])}</td>" for d in D)
-        c = qcount(W, q)
-        goal = W["goals"]["gym_sessions"] if q == "gym" else n
-        p = round(100 * c / goal)
-        pc = GOOD if p >= 70 else (MID if p >= 30 else BAD)
-        rows.append(f'<tr><td class="ql">{icon(QICON[q])}{QLABEL[q]}</td>{cells}<td>{goal}</td><td>{c}</td>'
-                    f'<td style="color:{pc}">{p}%</td></tr>')
-    for q in W["locked"]:
-        rows.append(f'<tr class="locked"><td class="ql">{icon(QICON[q])}{QLABEL[q]}</td>'
-                    f'<td colspan="{n}" class="lk">{icon("lock")} unlocks week {W["week"] + 1}</td><td>–</td><td>–</td><td>–</td></tr>')
-    pct_row = "".join(f'<td>{d["pct"]}</td>' for d in D)
-    xp_row = "".join(f'<td class="{"hot" if d["xp"] >= 500 else ""}">{d["xp"]}</td>' for d in D)
-    Wd, H = 70, 30
-    bw = Wd / n
-    bars, hearts, pts = [], [], []
-    for i, d in enumerate(D):
-        for b in range(int(round(d["pct"] / 10))):
-            bars.append(f'<rect x="{i * bw + 2:.2f}" y="{H - 2 - (b + 1) * 2.6:.2f}" width="{bw - 4:.2f}" height="2.2" '
-                        f'fill="{"#4f8a3a" if b % 2 else "#6fae4f"}"/>')
-        hy = H - 2 - d["sleep_score"] / 100 * 26
-        hx = i * bw + bw / 2
-        pts.append(f"{hx:.2f},{hy:.2f}")
-        hearts.append(f'<g transform="translate({hx - 1.6:.2f},{hy - 1.4:.2f}) scale(.4)">'
-                      + icon("heart").split(">", 1)[1].replace("</svg>", "") + "</g>")
-    grid = "".join(f'<line x1="0" x2="{Wd}" y1="{H - 2 - f * 26:.1f}" y2="{H - 2 - f * 26:.1f}" stroke="#d8c7a6" stroke-width=".15"/>'
-                   for f in (0, .5, 1))
-    labels = "".join(f'<text x="{i * bw + bw / 2:.2f}" y="{H + 1.6}" text-anchor="middle">{d["date"]}</text>'
-                     for i, d in enumerate(D))
-    chart = (f'<svg class="hchart" viewBox="-6 0 {Wd + 6} {H + 3}" shape-rendering="crispEdges">'
-             f'{grid}<text x="-1" y="{H - 2 - 26 + 1}" text-anchor="end">100%</text>'
-             f'<text x="-1" y="{H - 2 - 13 + 1}" text-anchor="end">50%</text>'
-             f'<text x="-1" y="{H - 1}" text-anchor="end">0%</text>{"".join(bars)}'
-             f'<polyline points="{" ".join(pts)}" fill="none" stroke="#c4473a" stroke-width=".3" stroke-dasharray=".8 .6"/>'
-             f'{"".join(hearts)}{labels}</svg>')
-    body = (hdr("leaf", "HABIT GRID", W["range"]) +
-            f'<table class="hg"><tr><th class="ql">QUESTS</th>{cols}<th>goal</th><th>done</th><th>%</th></tr>'
-            f'{"".join(rows)}<tr class="pr"><td class="ql">daily %</td>{pct_row}<td colspan="3">{S["pct_avg"]}%</td></tr>'
-            f'<tr class="xr"><td class="ql">{icon("gem")} XP</td>{xp_row}<td colspan="3">{S["xp"]:,}</td></tr></table>'
-            f'{chart}<div class="legend">{icon("check")} = done · pale = half credit · '
-            f'<span class="sw"></span> daily quests done % · {icon("heart")} sleep score</div>')
-    return card(body, "habits")
-
-
-def p_board():
+    head = "".join(f'<th>{d["date"]}<small>{d["dow"][:2]}</small></th>' for d in D)
     rows = ""
-    for q, t, text, mn, xp, _ in TIERS:
-        if q in W["locked"]:
-            rows += (f'<div class="rule new">{icon(QICON[q])}<span>{text} <small>{mn}</small></span>'
-                     f'<b>+{xp}</b><em>W{W["week"] + 1}</em></div>')
-            continue
-        c = sum(1 for d in W["days"] if d["hit"].get(q) == t)
-        rows += (f'<div class="rule {"grey" if c == 0 else ""}">{icon(QICON[q])}<span>{text} <small>{mn}</small></span>'
-                 f'<b>+{xp}</b><em>{f"×{c}" if c else "–"}</em></div>')
-    lv = "".join(f'<div class="lvc {"on" if i == S["lv"] else ""}"><span>LV{i}</span><b>{(i - 1) * 1000:,}</b></div>'
-                 for i in range(1, 9))
-    body = (hdr("notes", "XP QUEST BOARD", "action · тууштай байдал") + f'<div class="rules">{rows}</div>'
-            f'<div class="legend">grey = not earned · ×n = times earned in {wk()} · one tier per quest a day</div>'
-            f'<div class="sub">LEVEL TABLE · 1000 XP = 1 LV</div><div class="lvt">{lv}</div>')
-    return card(body, "board")
+    for q in W["active"]:
+        goal = len(S["sessions"]) if q == "gym" else n
+        rows += (f'<tr><th class="q">{icon(QICON[q])}{QLABEL[q]}</th>{"".join(cell(d, q) for d in D)}'
+                 f'<td class="sum">{qcount(W, q)}/{W["goals"]["gym_sessions"] if q == "gym" else goal}</td></tr>')
+    xp = "".join(f'<td>{d["xp"]}</td>' for d in D)
+    body = (title("calendar", "THE WEEK", W["range"]) +
+            f'<table class="wk"><tr><th></th>{head}<th class="sum">hit</th></tr>{rows}'
+            f'<tr class="xp"><th class="q">{icon("gem")}XP</th>{xp}<td class="sum">{S["xp"]:,}</td></tr></table>'
+            f'<p class="key">{mark("f")} done {mark("h")} half {mark(None)} missed</p>'
+            f'<dl class="tot">'
+            f'<div><dt>steps</dt><dd>{S["steps_tot"]:,}</dd><small>avg {k(S["steps_avg"])}</small></div>'
+            f'<div><dt>sleep</dt><dd>{hm(S["sleep_avg"])}</dd><small>avg · asleep {S["bed_avg"]}</small></div>'
+            f'<div><dt>burn</dt><dd>{S["burn_tot"]:,}</dd><small>avg {S["burn_avg"]} kcal</small></div>'
+            f'<div><dt>spent</dt><dd>¥{S["spent_tot"]:,}</dd><small>avg ¥{S["spent_avg"]}</small></div>'
+            f'</dl>')
+    return card(body, "week")
 
 
-# ───────────────────────────── 2 · day by day ─────────────────────────────
-def sleep_track(d):
-    b = clock(d["bed"]) - 24
-    x0 = max(0, b) / 20 * 100
-    x1 = min(20, plain(d["wake"])) / 20 * 100
-    ticks = "".join(f'<span style="left:{h / 20 * 100}%">{lab}</span>'
-                    for h, lab in [(0, "12A"), (4, "4A"), (8, "8A"), (12, "12P"), (16, "4P"), (20, "8P")])
-    return (f'<div class="strack"><div class="ticks">{ticks}</div><div class="rail"><i class="night"></i>'
-            f'<b style="left:{x0:.1f}%;width:{x1 - x0:.1f}%"></b></div>'
-            f'<div class="bw"><span>{d["bed"]}</span><span>{d["wake"]}</span></div></div>')
+# ───────────────────────────── p.3 quests ─────────────────────────────
+def p_quests():
+    tot = sum(qmax(W, q) for q in W["active"])
+    order = sorted(W["active"], key=lambda q: -(qmax(W, q) - qxp(W, q)))
+    rows = ""
+    for q in order:
+        pips = "".join(f'<i class="{state(d, q)[1] or ""}"></i>' for d in W["days"])
+        got, mx = qxp(W, q), qmax(W, q)
+        rows += (f'<li>{icon(QICON[q])}<div><b>{QLABEL[q]}</b><small>{RULE[q]}</small></div>'
+                 f'<span class="pips">{pips}</span><em>{got:,}<small>/{mx:,}</small></em>'
+                 f'<strong class="{"" if mx - got else "ok"}">{"−" + format(mx - got, ",") if mx - got else "✓"}</strong></li>')
+    for q in W["locked"]:
+        rows += (f'<li class="off">{icon(QICON[q])}<div><b>{QLABEL[q]}</b><small>{RULE[q]}</small></div>'
+                 f'<span class="pips soon">from {wk(1)}</span><em></em><strong></strong></li>')
+    p = S["xp"] / tot
+    body = (title("star", "QUESTS", "sorted by XP missed") +
+            f'<div class="qhead"><b>{S["xp"]:,}</b><span>of {tot:,} XP the board could pay</span>{bar(p, "xp")}'
+            f'<small>{round(p * 100)}% · one row per quest · pips = days, ½ = half credit</small></div>'
+            f'<ul class="ql">{rows}</ul>')
+    return card(body, "quests")
 
 
-def photos(d, maxh=22, maxw=74):
+# ───────────────────────────── p.4 plan ─────────────────────────────
+def why(q):
+    n = S["n"]
+    if q == "sleep":
+        return (f'{wk()}: asleep avg {S["bed_avg"]} · before 12A '
+                f'{len(days_where(W, lambda d: clock(d["bed"]) <= 24))}/{n} · best score {S["best_sleep"]["sleep_score"]}')
+    if q == "food":
+        return f'{wk()}: avg {S["kcal_avg"]:,} kcal · protein {S["mac_avg"][0]}g · {len(S["logged"])}/{n} logged'
+    if q == "burn":
+        pk = max(W["days"], key=lambda d: d["burn"])
+        return f'{wk()}: peak {pk["burn"]} kcal ({pk["date"]}) · avg {S["burn_avg"]}'
+    if q == "sport":
+        return f'{wk()}: {qcount(W, "sport")} days · {dates(days_where(W, lambda d: d.get("sport")))}'
+    if q == "push":
+        return f'{wk()}: best {max(d["push"] for d in W["days"])} in a day'
+    if q == "pull":
+        return f'{wk()}: 30+ on {qcount(W, "pull")} of {len(S["sessions"])} gym days'
+    if q == "spend":
+        return f'{wk()}: {qcount(W, "spend")}/{n} days · avg ¥{S["spent_avg"]}'
+    if q == "steps":
+        return f'{wk()}: {qcount(W, "steps")}/{n} days'
+    if q == "gym":
+        return f'{wk()}: {len(S["sessions"])} sessions · best {max((d["sess"]["rating"] for d in S["sessions"]), default=0)}/10'
+    return ""
+
+
+def p_plan():
+    order = sorted([q for q in W["active"] if q != "gym"], key=lambda q: -(qmax(W, q) - qxp(W, q)))
+    days = next_dates()
+    head = "".join(f'<span>{d.day}</span>' for d in days)
+    focus = ""
+    for i, q in enumerate(order[:3], 1):
+        focus += (f'<div class="fc pf"><div class="fh"><span class="no">{i}</span>{icon(QICON[q])}<b>{TARGET[q]}</b>'
+                  f'<em>+{MAIN_XP[q]}</em></div><small>{why(q)}</small>'
+                  f'<div class="ticks">{"".join("<i></i>" for _ in days)}</div></div>')
+    keep = [q for q in W["active"] if qcount(W, q) >= (len(S["sessions"]) if q == "gym" else S["n"] - 1)]
+    keep_txt = " · ".join(f'{QLABEL[q]} {qcount(W, q)}/{W["goals"]["gym_sessions"] if q == "gym" else S["n"]}'
+                          for q in keep) or "—"
+    new = [(QICON[q], TARGET[q], MAIN_XP[q]) for q in W["locked"]]
+    new += [(i, t, x) for i, t, _, x in W.get("next_week_extra", [])]
+    new_html = "".join(f'<li>{icon(i)}<b>{t}</b><em>+{x}</em><i class="box"></i></li>' for i, t, x in new)
+    per_day = math.ceil(S["need"] / 7)
+    body = (title("leaf", f'{wk(1)} PLAN', f'{days[0].month}.{days[0].day} – {days[-1].month}.{days[-1].day}') +
+            f'<div class="goal">LV {S["lv"]} → LV {S["lv"] + 1}<b>{S["need"]} XP to go</b><span>≈ {per_day} XP a day</span></div>'
+            f'<div class="dh"><span>FIX · biggest gaps</span><div class="ticks lab">{head}</div></div>{focus}'
+            f'<div class="keep"><b>KEEP</b> {keep_txt}</div>'
+            f'<div class="dh"><span>ALSO THIS WEEK</span></div><ul class="new">{new_html}</ul>')
+    return card(body, "plan")
+
+
+# ───────────────────────────── day + gym ─────────────────────────────
+def photos(d, maxh=27, maxw=74):
     n = d.get("photos", 0)
     if not n:
         return ""
     rows = 1 if n <= 4 else 2
     cols = -(-n // rows)
-    h = min(maxh / rows - 0.6, (maxw / max(cols, 2) - 0.8) * 0.75)
+    h = min(maxh / rows - 0.5, (maxw / max(cols, 2) - 0.8) * 0.75)
     w = h / 0.75
     imgs = "".join(f'<img src="photos/{d["date"]}-{i}.jpg" style="width:{w:.2f}mm;height:{h:.2f}mm">'
                    for i in range(1, n + 1))
-    return f'<div class="strip" style="max-width:{cols * (w + 0.8):.2f}mm">{imgs}</div>'
+    return f'<div class="ph" style="max-width:{cols * (w + 0.8):.2f}mm">{imgs}</div>'
 
 
 def journal_html(s):
@@ -694,71 +623,66 @@ def journal_html(s):
     return s
 
 
-def p_day(d):
+def sleep_bar(d):
+    x0 = max(0, clock(d["bed"]) - 24) / 20 * 100
+    x1 = min(20, plain(d["wake"])) / 20 * 100
+    return (f'<span class="tl"><i class="nt"></i><b style="left:{x0:.1f}%;width:{x1 - x0:.1f}%"></b>'
+            f'<em style="left:{x0:.1f}%">{d["bed"]}</em><em class="r" style="left:{x1:.1f}%">{d["wake"]}</em></span>')
+
+
+def day_row(d, q):
     g = W["goals"]
+    xp, st = state(d, q)
+    s = d["sess"]
+    viz = ""
+    if q == "steps":
+        val, viz = f'{d["steps"]:,}', bar(d["steps"] / 10000)
+    elif q == "food":
+        val = f'{d["kcal"]:,} kcal · P{d["macros"][0]}g' if d.get("kcal") else "not logged"
+        viz = f'<span class="it">C {d["macros"][1]}g · F {d["macros"][2]}g</span>' if d.get("kcal") else ""
+    elif q == "sleep":
+        val, viz = f'{d["sleep"]} · {d["sleep_score"]}', sleep_bar(d)
+    elif q == "gym":
+        if not s:
+            return ""
+        val = f'{s["kind"]} {s["rating"]}/10 · {s["sets"]} sets → p.{PAGE_NO[d["date"] + "x"]}'
+    elif q == "sport":
+        val = d.get("sport") or "—"
+    elif q == "burn":
+        val, viz = f'{d["burn"]} kcal', bar(d["burn"] / 1000)
+    elif q == "pull":
+        val, viz = str(d["pull"]), bar(d["pull"] / 30)
+    elif q == "push":
+        val, viz = str(d["push"]), bar(d["push"] / 100)
+    elif q == "spend":
+        val = f'¥{d["spent"]}'
+        viz = f'<span class="it cn">{d.get("spent_items", "")}</span>'
+    elif q == "bike":
+        val, viz = f'{d.get("bike_km", 0)} km', bar(d.get("bike_km", 0) / 5)
+    else:
+        val, viz = f'{d.get("focus_h", 0)} h', bar(d.get("focus_h", 0) / 2)
+    return (f'<li class="{st or "m"}">{mark(st)}{icon(QICON[q])}<b>{QLABEL[q]}</b><span class="v">{val}</span>'
+            f'<span class="viz">{viz}</span><em>{f"+{xp}" if xp else ""}</em></li>')
+
+
+def p_day(d):
     s = d["sess"]
     if s:
-        name, bg, fg = KIND[s["kind"]]
-        gchip = (f'<span class="chip" style="background:{bg};color:{fg}">{icon("dumbbell")}{s["kind"].upper()} → '
-                 f'p.{PAGE_NO[d["date"] + "x"]}</span>')
+        tag = f'<span class="tag {s["kind"]}">{s["kind"].upper()}</span>'
     elif d.get("sport"):
-        gchip = f'<span class="chip" style="background:#f6b77c;color:#8a3f12">{icon("ball")}{d["sport"].upper()}</span>'
+        tag = f'<span class="tag sport">{d["sport"].upper()}</span>'
     else:
-        gchip = '<span class="chip" style="background:#e8dcc2;color:#7a6a55">REST DAY</span>'
-    daily = [q for q in W["active"] if q != "gym"]  # a rest day is not a missed gym day
-    done = len(d["hit"])
-    chips = "".join(f'<span class="pchip">{icon(ic)}{t}</span>' for ic, t in d.get("chips", []))
-    if d.get("kcal"):
-        p, c, f = d["macros"]
-        kc = (f'<div class="tv">{d["kcal"]:,}<em>kcal</em></div><div class="tm">P {p}g · C {c}g · F {f}g</div>'
-              f'{segbar(min(1, d["kcal"] / g["kcal_line"]), MID if d["kcal"] > 2700 else "#5c9a3c", 10)}'
-              f'<div class="tm">line {g["kcal_line"]:,}</div>')
-    else:
-        kc = '<div class="tv">—</div><div class="tm">not logged</div>'
-    if s:
-        extra = f' + {d["sport"]}' if d.get("sport") else ""
-        tr = (f'<div class="tv">{s["rating"]}<em>/10</em></div><div class="tm">{KIND[s["kind"]][0].lower()} · '
-              f'{s["sets"]} sets{extra}</div><div class="tm">pull-ups {d["pull"]} · push-ups {d["push"]}</div>')
-    elif d.get("sport"):
-        tr = f'<div class="tv sm">{d["sport"]}</div><div class="tm">no gym · sport day</div>'
-    else:
-        tr = '<div class="tv">—</div><div class="tm">rest day</div>'
-    missed = [q for q in daily if q not in d["hit"]]
-    halves = [q for q in daily if state(d, q)[1] == "half"]
-    lost = sum(MAIN_XP[q] for q in missed) + sum(MAIN_XP[q] - state(d, q)[0] for q in halves)
-    mtxt = " · ".join(QLABEL[q] for q in missed) or "nothing"
-    if halves:
-        mtxt += " · ½ " + " · ½ ".join(QLABEL[q] for q in halves)
-    qcells = "".join(f'<div class="qc">{checkbox(state(d, q)[1])}{icon(QICON[q])}<small>{QLABEL[q].split()[-1]}</small></div>'
-                     for q in W["active"])
-    xchips = "".join(f'<span class="xchip">{icon(QICON[q])}+{state(d, q)[0]}</span>' for q in W["active"] if q in d["hit"])
-    sc = d["sleep_score"]
-    scol = GOOD if sc >= 75 else ("#3d78b8" if sc >= 70 else MID)
+        tag = '<span class="tag rest">REST</span>'
+    chips = "".join(f'<span class="pc">{icon(i)}{t}</span>' for i, t in d.get("chips", []))
+    rows = "".join(day_row(d, q) for q in W["active"])
+    daily = [q for q in W["active"] if q != "gym"]
+    left = sum(MAIN_XP[q] - state(d, q)[0] for q in daily if state(d, q)[1] != "f")
     body = f'''
-<div class="dtop"><span class="date">{d["date"]}<small>{d["dow"]}</small></span>
-  <span class="chip q">{icon("check")}{done}/{len(W["active"])}</span>{gchip}<span class="xp">{icon("gem")}+{d["xp"]} XP</span></div>
+<div class="dh1"><b class="dt">{d["date"]}</b><span class="dw">{d["dow"]}</span>{tag}<span class="dxp">+{d["xp"]}<small>XP</small></span></div>
 {photos(d)}
-<div class="jrow"><div class="box journal">{chips}{journal_html(d["journal"])}</div>
-  <div class="box qring"><div class="ring" style="--p:{d["pct"]}"><b>{d["pct"]}%</b></div><small>quests</small></div></div>
-<div class="box sleep"><div class="sl">{icon("moon")}SLEEP</div>{sleep_track(d)}
-  <div class="sr"><b style="color:{scol}">{d["sleep"].replace("h", ":")}</b><span class="sc" style="border-color:{scol};color:{scol}">{sc}</span><small>score</small></div></div>
-<div class="t3">
-  <div class="box tt"><div class="tl2" style="color:#3d78b8">{icon("shoe")}STEPS</div><div class="tv">{k(d["steps"])}</div>
-    {segbar(d["steps"] / 10000, "#3d78b8", 10)}<div class="tm">goal 10k</div></div>
-  <div class="box tt"><div class="tl2" style="color:#8a5cb8">{icon("flame")}BURN</div><div class="tv">{d["burn"]}<em>kcal</em></div>
-    {segbar(d["burn"] / g["burn_per_day"], "#8a5cb8", 10)}<div class="tm">goal {g["burn_per_day"]} · quest 1000</div></div>
-  <div class="box tt"><div class="tl2" style="color:#b5652b">{icon("dumbbell")}TRAINING</div>{tr}</div>
-</div>
-<div class="t3">
-  <div class="box tt"><div class="tl2" style="color:#c4473a">{icon("coin")}SPENT</div><div class="tv">¥{d["spent"]}</div>
-    {segbar(min(1, d["spent"] / (2 * g["spend_per_day"])), "#5c9a3c" if d["spent"] <= g["spend_per_day"] else "#c4473a", 10)}
-    <div class="tm cn">{d.get("spent_items", "")}</div></div>
-  <div class="box tt"><div class="tl2" style="color:#d9822b">{icon("apple")}KCAL</div>{kc}</div>
-  <div class="box tt miss"><div class="tl2" style="color:#c4473a">{icon("target")}MISSED</div>
-    <div class="tv">{"−" + str(lost) if lost else "0"}<em>XP</em></div><div class="tm">{mtxt}</div></div>
-</div>
-<div class="box quests"><div class="qgrid" style="grid-template-columns:repeat({len(W["active"])},1fr)">{qcells}</div>
-  <div class="xrow">{xchips or '<span class="tm">no XP today</span>'}<b>= {d["xp"]} XP</b></div></div>'''
+<p class="jr">{chips}{journal_html(d["journal"])}</p>
+<ul class="dl">{rows}</ul>
+<div class="dsum"><span>{len(d["hit"])}/{len(W["active"])} quests · {d["pct"]}%</span><span>left on the table <b>{left}</b> XP</span></div>'''
     return card(body, d["date"], "day")
 
 
@@ -774,225 +698,68 @@ def top_set(sets):
         except ValueError:
             return 0
     w, r = max(sets, key=lambda s_: (num(s_[0]), reps_of(s_[1])))
-    unit = "lb" if "lb" in str(w) else "kg"
-    return unit, num(w), reps_of(r), f"{w} × {r}"
+    return ("lb" if "lb" in str(w) else "kg"), num(w), reps_of(r), f"{w} × {r}"
 
 
-def p_ex(d):
+def trend(d, e):
+    """Compare an exercise's top set with the last time it was done earlier this week."""
+    idx = W["days"].index(d)
+    for x in reversed(W["days"][:idx]):
+        pe = x["sess"] and next((p for p in x["sess"]["exercises"] if p["name"] == e["name"]), None)
+        if pe:
+            u, wv, rv, _ = top_set(e["sets"])
+            pu, pw, pr, plab = top_set(pe["sets"])
+            if pu != u:
+                return f'<i class="tr eq" title="{x["date"]} {plab}">≈</i>'
+            a = "up" if (wv, rv) > (pw, pr) else ("dn" if (wv, rv) < (pw, pr) else "eq")
+            return f'<i class="tr {a}">{ {"up": "↑", "dn": "↓", "eq": "="}[a] }{x["date"]}</i>'
+    return ""
+
+
+def p_gym(d):
     s = d["sess"]
-    name, bg, fg = KIND[s["kind"]]
-    boxes = []
+    boxes = ""
     for e in s["exercises"]:
-        rt = ""
-        if e.get("rating"):
-            r = e["rating"]
-            rc = "#4f8a3a" if r >= 8.5 else ("#3d6fb0" if r >= 7 else "#d9622b")
-            rt = f'<i class="srt" style="background:{rc}">{r}</i>'
+        r = e.get("rating")
+        rt = f'<i class="sr {"hi" if r >= 8.5 else ("md" if r >= 7 else "lo")}">{r}</i>' if r else ""
         ws = "".join(f"<td>{w}</td>" for w, _ in e["sets"])
-        rs = "".join(f"<td>{r}R</td>" for _, r in e["sets"])
-        boxes.append(f'<div class="ex"><div class="exn" style="background:{bg};color:{fg}">{e["name"]}{rt}</div>'
-                     f'<table><tr class="w">{ws}</tr><tr class="rp">{rs}</tr></table></div>')
-    rc = "#4f8a3a" if s["rating"] >= 8 else ("#3d6fb0" if s["rating"] >= 7 else "#d9622b")
-    notes = "".join(f'<div class="nt {k_}">{icon(k_)}{t}</div>' for k_, t in s.get("notes", []))
-    earlier = [x for x in W["days"] if x["sess"] and x["date"] != d["date"] and W["days"].index(x) < W["days"].index(d)]
-    vrows = ""
-    for e in s["exercises"]:
-        u, wv, rv, lab = top_set(e["sets"])
-        prev = None
-        for x in reversed(earlier):
-            pe = next((pe for pe in x["sess"]["exercises"] if pe["name"] == e["name"]), None)
-            if pe:
-                prev = (x["date"], top_set(pe["sets"]))
-                break
-        if not prev:
-            vrows += f'<tr><td>{e["name"]}</td><td>{lab}</td><td class="first">—</td></tr>'
-            continue
-        pd, (pu, pw, pr, plab) = prev
-        if pu != u:
-            cls, txt = "eq", f"≈ {pd} · {plab} · other unit"
-        elif (wv, rv) > (pw, pr):
-            cls, txt = "up", f"↑ {pd} · {plab}"
-        elif (wv, rv) < (pw, pr):
-            cls, txt = "dn", f"↓ {pd} · {plab}"
-        else:
-            cls, txt = "eq", f"= {pd} · {plab}"
-        vrows += f'<tr><td>{e["name"]}</td><td>{lab}</td><td class="{cls}">{txt}</td></tr>'
-    xp = TIER[("gym", d["hit"]["gym"])][0]
+        rs = "".join(f"<td>{r_}</td>" for _, r_ in e["sets"])
+        boxes += (f'<div class="ex"><div class="en"><span>{e["name"]}</span>{rt}{trend(d, e)}</div>'
+                  f'<table><tr class="w">{ws}</tr><tr class="r">{rs}</tr></table></div>')
+    notes = "".join(f'<li class="{k_}">{icon(k_)}{t}</li>' for k_, t in s.get("notes", []))
     body = f'''
-<div class="dtop"><span class="date">{d["date"]}<small>{d["dow"]}</small></span>
-  <span class="chip" style="background:{bg};color:{fg}">{icon("dumbbell")}{name}</span>
-  <span class="xp">{icon("gem")}+{xp} XP</span></div>
-<div class="hdr ex-h">{icon("dumbbell")}<h1>EXERCISE</h1><span class="r">top kg · bottom reps · tag = set rating</span></div>
-<div class="exs">{"".join(boxes)}</div>
-<div class="rate"><div class="medal" style="background:{rc}"><b>{s["rating"]}</b><small>/10</small></div>
-  <div><div>{s["sets"]} sets · {len(s["exercises"])} exercises</div><div>{icon("flame")}burn <b>{d["burn"]}</b> kcal that day</div></div></div>
-<div class="box notes"><div class="nh">{icon("notes")}NOTES</div>{notes}
-  <div class="vh">TOP SET · vs LAST TIME THIS WEEK</div><table class="vs">{vrows}</table></div>'''
-    return card(body, d["date"] + "x", "exday")
-
-
-# ───────────────────────────── 3 · what I lacked ─────────────────────────────
-def gap_text(q):
-    D, g, n = W["days"], W["goals"], S["n"]
-    if q == "sleep":
-        return (f'avg asleep {S["bed_avg"]} · before 12A {len(days_where(W, lambda d: clock(d["bed"]) <= 24))}/{n} · '
-                f'score 80+ {len(days_where(W, lambda d: d["sleep_score"] >= 80))}/{n} (best {S["best_sleep"]["sleep_score"]}) · '
-                f'8h+ {len(days_where(W, lambda d: mins(d["sleep"]) >= 480))}/{n}')
-    if q == "food":
-        miss = [d for d in D if not d.get("kcal")]
-        hi = max(S["logged"], key=lambda d: d["kcal"]) if S["logged"] else None
-        return (f'avg {S["kcal_avg"]:,} kcal vs {g["kcal_line"]:,} line · ≤2500 + P150g '
-                f'{sum(1 for d in D if d["hit"].get("food") == "lean")} days · not logged {dates(miss)}'
-                + (f' · max {hi["kcal"]:,} ({hi["date"]})' if hi else ""))
-    if q == "burn":
-        pk = max(D, key=lambda d: d["burn"])
-        return f'1000+ kcal {qcount(W, q)}/{n} · peak {pk["burn"]} ({pk["date"]}) · avg {S["burn_avg"]}'
-    if q == "sport":
-        return f'{qcount(W, q)} sport days · {dates(days_where(W, lambda d: d.get("sport")))}'
-    if q == "steps":
-        lo = min(D, key=lambda d: d["steps"])
-        return f'10k+ {qcount(W, q)}/{n} · 15k+ {sum(1 for d in D if d["hit"].get("steps") == "15k")} · lowest {k(lo["steps"])} ({lo["date"]})'
-    if q == "push":
-        return f'100+ {qcount(W, q)}/{n} · best {max(d["push"] for d in D)} · week total {sum(d["push"] for d in D)}'
-    if q == "pull":
-        return f'30+ {qcount(W, q)} days · best {max(d["pull"] for d in D)} · week total {sum(d["pull"] for d in D)}'
-    if q == "gym":
-        return (f'{len(S["sessions"])}/{g["gym_sessions"]} sessions · 9+ rated {sum(1 for d in D if d["hit"].get("gym") == "9")} · '
-                f'best {max((d["sess"]["rating"] for d in S["sessions"]), default=0)}/10')
-    if q == "spend":
-        hi = max(D, key=lambda d: d["spent"])
-        return f'≤ ¥{g["spend_per_day"]} {qcount(W, q)}/{n} · avg ¥{S["spent_avg"]} · top ¥{hi["spent"]} ({hi["date"]})'
-    return f"{qcount(W, q)}/{n} days"
-
-
-FIX = {"sleep": "Lights out before 2A first, then 12A · even 1 of 3 = +50 a night",
-       "food": "Log every meal · 150g protein under 2,500 kcal = +200",
-       "burn": "One long walk or cardio day to cross 1,000 kcal = +100",
-       "sport": "Add cardio, basketball or a run 2–3 days = +100 each",
-       "steps": "Keep 10k every day; push one day to 15k = +150",
-       "push": "Spread push-ups: 4 × 25 through the day = 100",
-       "pull": "Finish 30 pull-ups every gym day = +50",
-       "gym": "Aim for one session rated 9+ = +250",
-       "spend": "Cap snacks & taxis to stay ≤ ¥80 = +50 a day",
-       "bike": "Ride 5km+ on rest days = +50",
-       "focus": "Block 2h for the main project = +200"}
-
-
-def lack_order():
-    return sorted(W["active"], key=lambda q: -(qmax(W, q) - qxp(W, q)))
-
-
-def p_lack1():
-    rows, tot_max = [], 0
-    for q in lack_order():
-        got, mx = qxp(W, q), qmax(W, q)
-        tot_max += mx
-        rows.append(f'<div class="lrow">{icon(QICON[q])}<span>{QLABEL[q]}</span><i><b style="width:{got / mx * 100:.0f}%"></b></i>'
-                    f'<em>{got:,}<small> / {mx:,}</small></em><strong>−{mx - got:,}</strong></div>')
-    p = round(100 * S["xp"] / tot_max)
-    g = "".join(f'<div class="box gap">{icon(QICON[q])}<div><b>{QLABEL[q].upper()} <em>−{qmax(W, q) - qxp(W, q):,} XP</em></b>'
-                f'<small>{gap_text(q)}</small></div></div>' for q in lack_order()[:3])
-    body = (hdr("target", "WHAT I LACKED", "1 / 2 · XP left on the table") +
-            f'<div class="box lackbox"><div class="lhead"><div class="ring" style="--p:{p}"><b>{p}%</b></div>'
-            f'<div><b>{S["xp"]:,} of {tot_max:,} XP</b><small>earned vs the most the quest board could pay in {wk()}</small></div></div>'
-            f'{"".join(rows)}<div class="legend"><span class="sw"></span> earned · empty = missed · red = XP lost</div></div>'
-            f'<div class="sub">3 BIGGEST GAPS</div>{g}')
-    return card(body, "lack1")
-
-
-def p_lack2():
-    D, g, n = W["days"], W["goals"], S["n"]
-    ses = S["sessions"]
-    eb = min(D, key=lambda d: clock(d["bed"]))
-    bs = S["best_sleep"]
-    prot = days_where(W, lambda d: d.get("kcal") and d["macros"][0] >= g["protein_g"])
-    items = [
-        ("moon", "Asleep before 12A", len(days_where(W, lambda d: clock(d["bed"]) <= 24)), n, f'earliest {eb["bed"]} ({eb["date"]})'),
-        ("moon", "Sleep score 80+", len(days_where(W, lambda d: d["sleep_score"] >= 80)), n, f'best {bs["sleep_score"]} ({bs["date"]})'),
-        ("moon", "8h+ sleep", len(days_where(W, lambda d: mins(d["sleep"]) >= 480)), n,
-         dates(days_where(W, lambda d: mins(d["sleep"]) >= 480))),
-        ("apple", "Food logged", len(S["logged"]), n, "missed " + dates([d for d in D if not d.get("kcal")])),
-        ("apple", f'Protein {g["protein_g"]}g+', len(prot), n, " · ".join(f'{d["date"]} {d["macros"][0]}g' for d in prot) or "none"),
-        ("apple", "Under 2,700 kcal", len(days_where(W, lambda d: d.get("kcal") and d["kcal"] <= 2700)), n,
-         dates(days_where(W, lambda d: d.get("kcal") and d["kcal"] <= 2700))),
-        ("flame", "Burn 1000+ kcal", qcount(W, "burn"), n, gap_text("burn").split(" · ")[1]),
-        ("pushup", "100 push-ups", qcount(W, "push"), n, f'best {max(d["push"] for d in D)} · total {sum(d["push"] for d in D)}'),
-        ("coin", f'Spend ≤ ¥{g["spend_per_day"]}', qcount(W, "spend"), n, f'avg ¥{S["spent_avg"]} / day'),
-        ("dumbbell", "Gym rated 9+", sum(1 for d in ses if d["hit"]["gym"] == "9"), len(ses),
-         f'best {max((d["sess"]["rating"] for d in ses), default=0)} · avg {S["rating_avg"]}'),
-        ("pullup", "30 pull-ups on gym day", sum(1 for d in ses if d["pull"] >= 30), len(ses),
-         " · ".join(f'{d["date"]} = {d["pull"]}' for d in ses if d["pull"] < 30) or "all ✓"),
-        ("ball", "Sport day", qcount(W, "sport"), n, dates(days_where(W, lambda d: d.get("sport")))),
-        ("shoe", "10k steps", qcount(W, "steps"), n,
-         " · ".join(f'{d["date"]} = {k(d["steps"])}' for d in D if d["steps"] < 10000) or "every day ✓"),
-    ]
-    rows = "".join(
-        f'<div class="lk2">{icon(i)}<span>{t}<small>{s_}</small></span>'
-        f'<i>{"".join("<b class=on></b>" if j < c else "<b></b>" for j in range(m))}</i>'
-        f'<em class="{"zero" if c == 0 else ("ok" if m and c / m >= .7 else "")}">{c}/{m}</em></div>'
-        for i, t, c, m, s_ in items)
-    f = "".join(f'<div class="fix">{icon(QICON[q])}{FIX[q]}</div>' for q in lack_order()[:4])
-    body = (hdr("target", "WHAT I LACKED", "2 / 2 · days hit") + f'<div class="box lk2box">{rows}</div>'
-            f'<div class="box fixbox"><div class="nh">{icon("pen")}FIX NEXT WEEK · biggest gaps first</div>{f}</div>')
-    return card(body, "lack2")
-
-
-def p_next():
-    n = S["n"]
-    sub = {
-        "steps": f'{wk()}: {qcount(W, "steps")}/{n} days' + (" ✓ keep it" if qcount(W, "steps") >= n - 1 else ""),
-        "food": f'{wk()}: lean days {sum(1 for d in W["days"] if d["hit"].get("food") == "lean")} · logged {len(S["logged"])}/{n}',
-        "sleep": f'{wk()}: before 12A {len(days_where(W, lambda d: clock(d["bed"]) <= 24))}/{n} · avg {S["bed_avg"]}',
-        "gym": f'{wk()}: {len(S["sessions"])} sessions · rate one 9+ → +250',
-        "sport": f'{wk()}: {qcount(W, "sport")} days · cardio · basketball · run',
-        "burn": f'{wk()} peak {max(d["burn"] for d in W["days"])}',
-        "pull": f'{wk()}: 30+ on {qcount(W, "pull")} days',
-        "push": f'{wk()} best {max(d["push"] for d in W["days"])}',
-        "spend": f'{wk()}: {qcount(W, "spend")}/{n} days · avg ¥{S["spent_avg"]}',
-    }
-    title = {"steps": "Walk 10k steps a day", "food": "≤2500 kcal + 150g protein", "sleep": "Asleep before 12A · 8h+",
-             "gym": f'Gym {W["goals"]["gym_sessions"]} sessions', "sport": "Sport 2+ days", "burn": "Burn 1000+ kcal once",
-             "pull": "30 pull-ups every gym day", "push": "100 push-ups in a day", "spend": "Spend ≤ ¥80 · 4 days",
-             "bike": "Bike 5km+", "focus": "Focus 2h+ on main work"}
-    qs = [(QICON[q], title[q], sub[q], MAIN_XP[q], False) for q in lack_order()]
-    qs += [(i, t, s_, x, False) for i, t, s_, x in W.get("next_week_extra", [])]
-    qs += [(QICON[q], title[q], "NEW quest", MAIN_XP[q], True) for q in W["locked"]]
-    rows = "".join(f'<div class="box nq">{icon(i)}<div><b>{t}</b><small class="{"new" if new else ""}">{s_}</small></div>'
-                   f'<em>+{x}</em><span class="cb"></span></div>' for i, t, s_, x, new in qs)
-    per_day = math.ceil(S["need"] / 7)
-    body = (hdr("leaf", f'WEEK {W["week"] + 1} QUESTS', "biggest gaps first") +
-            f'<div class="box lvbar">{icon("gem")}LV {S["lv"]} → LV {S["lv"] + 1} · {S["need"]} XP to go · about {per_day} XP a day</div>'
-            f'<div class="nqs">{rows}</div>')
-    return card(body, "next")
+<div class="dh1"><b class="dt">{d["date"]}</b><span class="dw">{d["dow"]}</span><span class="tag {s["kind"]}">{KIND[s["kind"]][0]}</span>
+  <span class="dxp">{s["rating"]}<small>/10</small></span></div>
+<p class="gm">{s["sets"]} sets · {len(s["exercises"])} exercises · burn {d["burn"]} kcal · top kg / bottom reps · ↑↓ vs earlier this week</p>
+<div class="exs">{boxes}</div>
+<ul class="gn">{notes}</ul>'''
+    return card(body, d["date"] + "x", "gym")
 
 
 def p_notes(key):
-    body = hdr("notes", "NOTES", "") + '<div class="lines"></div>'
-    return card(body, key)
+    return card(title("notes", "NOTES") + '<div class="lines"></div>', key)
 
 
 # ───────────────────────────── assemble ─────────────────────────────
 FONTS = ('<link rel="preconnect" href="https://fonts.googleapis.com">'
          '<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>'
          '<link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400;500;600;700'
-         '&family=Press+Start+2P&family=Nunito:wght@500;600;700;800&family=Noto+Sans+SC:wght@500;700&display=swap" rel="stylesheet">')
+         '&family=Nunito:wght@500;600;700;800;900&family=Noto+Sans+SC:wght@500;700&display=swap" rel="stylesheet">')
 SLOT_X = (18, 110)   # A4 = 210 × 297 mm, two 82 mm cards + 10 mm gutter
 SLOT_Y = (32, 160)   # two 116 mm cards + 12 mm gutter
 
 
 def build_cards():
-    order = ["cover", "glance", "avg", "habits", "board"]
+    order = ["cover", "week", "quests", "plan"]
     for d in W["days"]:
         order.append(d["date"])
         if d["sess"]:
             order.append(d["date"] + "x")
-    order += ["lack1", "lack2", "next"]
     while len(order) % 4:  # a printed sheet holds 4 cards; pad with note pages
         order.append(f"notes{len(order)}")
     PAGE_NO.clear()
     PAGE_NO.update({k_: i for i, k_ in enumerate(order, 1)})
-    pages = {"cover": p_cover, "glance": p_glance, "avg": p_avg, "habits": p_habits, "board": p_board,
-             "lack1": p_lack1, "lack2": p_lack2, "next": p_next}
+    pages = {"cover": p_cover, "week": p_week, "quests": p_quests, "plan": p_plan}
     days = {d["date"]: d for d in W["days"]}
     out = []
     for k_ in order:
@@ -1001,7 +768,7 @@ def build_cards():
         elif k_.startswith("notes"):
             out.append(p_notes(k_))
         elif k_.endswith("x"):
-            out.append(p_ex(days[k_[:-1]]))
+            out.append(p_gym(days[k_[:-1]]))
         else:
             out.append(p_day(days[k_]))
     return out
