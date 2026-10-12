@@ -44,6 +44,7 @@ Words point to the truth; only experience reaches it.
 
 ## Connections
 
+- [[We cling to familiar suffering]]: the familiar can also feel like home. That's the other side of "finally home".
 - [[We want the feeling, not the thing]]: both passages put the answer *in a feeling, within*. Same thread, same caveat: a feeling is meaningful, but not infallible.
 - **This vault's own `active` rule** comes close to this passage: "The truth does not come from memorizing a sentence or two." Collecting and understanding a quote is `insight` at most. Living it is something else. That is a real overlap, not just a surface resemblance.
 - **The finger pointing at the moon**, an image from the Zen/Buddhist tradition: teachings are the finger, and mistaking the finger for the moon misses the point. It makes the same "point TO the truth" move.

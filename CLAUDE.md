@@ -60,13 +60,14 @@ Current vocabulary (it grows slowly):
 - **Emotions:** `emotions` `fear` `joy` `self-compassion` `emotional-regulation`
 - **Desire & happiness:** `desire` `happiness` `peace` `envy` `attachment` `freedom`
 - **Self:** `authenticity` `self-love` `self-awareness` `values` `identity`
-- **Freedom & acceptance:** `letting-go` `acceptance` `non-resistance` `presence` `lightness`
+- **Freedom & acceptance:** `suffering` `letting-go` `acceptance` `non-resistance` `presence` `lightness`
 - **Hope & inner understanding:** `hope` `inner-wisdom` `meaning` `growth` `spirituality`
 - **Action & craft:** `resistance` `professionalism` `consistency` `creativity` `courage` `craft`
 - **Love:** `love` `compassion` `romantic-love` `trust` `intimacy` `connection` `relationships`
 
 Distinctions worth keeping:
 
+- `suffering`: the psychological layer added on top of pain (the "second arrow"). It's the problem that the next tags respond to.
 - `acceptance`: acknowledging reality instead of denying it.
 - `letting-go`: releasing unnecessary attachment, struggle or control over what can't be controlled.
 - `non-resistance`: not fighting what is already happening inside, such as a thought or a feeling.
