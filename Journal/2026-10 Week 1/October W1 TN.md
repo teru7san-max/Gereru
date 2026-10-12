@@ -6,34 +6,34 @@ created: 2026-10-12
 
 # October 2026 · Week 1 → TN cards
 
-Week 1 (10.1–10.7) laid out as 82×116 mm traveler's-notebook cards in the style of the September booklet.
+10.1–10.7 as 82×116 mm traveler's-notebook cards.
 
 - **PDF, one card per page:** [[October_2026_W1_TN.pdf]]
 - **PDF to print (A4, 4 cards per sheet, crop marks, sheets in reverse order):** [[October_2026_W1_TN_print_A4_reversed.pdf]]. Print at 100% and check the 90 mm scale bar.
-- **HTML:** `week1-tn.html` (open in a browser)
-
-20 pages, 10.1–10.7 only, in three sections:
 
 | # | Section | Pages |
 |---|---------|-------|
 | — | Cover: LV, XP and contents | 1 |
-| 1 | **Дүгнэлт / Summary**: weekly average ×2, habit grid, XP rules | 2–5 |
+| 1 | **Дүгнэлт / Summary**: week at a glance, weekly average, habit grid, XP rules | 2–5 |
 | 2 | **Өдөр бүр / Day by day**: a day card for each day, followed by its gym card | 6–17 |
 | 3 | **Дутсан зүйл / What I lacked**: XP left on the table, days hit, week 2 quests | 18–20 |
 
-## What I lacked (p.18–19)
+## How it's built
 
-Earned **2,640 of 7,900 XP (33%)** the quest board could pay.
+- `week1.json` holds **only the raw week**: each day's steps, sleep, food, spending, journal and photo count, plus every gym session's sets.
+- `../_tn/build.py` scores each day against the XP rules and works out every average, best day, gap, "what I lacked" line and next-week quest from that data. Nothing in the cards is typed by hand.
+- `photos/` holds `<date>-<n>.jpg`, for example `10.3-2.jpg`.
 
-- **Sleep, −1,650 XP:** average bedtime 05:46, never asleep before 12A, sleep score never 80+ (best 77), 8h+ only 2 of 7 nights.
-- **Food, −910 XP:** averaged 2,953 kcal against the 2,400 line, never ≤2,500 kcal with 150g protein, and 10.4 and 10.5 weren't logged.
-- **Burn and push-ups, −1,050 XP:** never burned 1,000 kcal (peak 824) and never did 100 push-ups (best 60).
-- **Smaller gaps:** spent ≤ ¥80 on only 2 of 7 days, no gym session rated 9+, only one leg day (9 sets, no hamstring or calf work), and 10.4 was a 0 XP day.
+## Making week 2
 
-To rebuild after editing the data in `build.py`:
+1. Create a `2026-10 Week 2` folder with a `photos/` subfolder.
+2. Copy `week1.json` into it as `week2.json`.
+3. Change `week`, `range`, `pdf_name` and `xp_before_week` to `2640`. Empty `locked_quests` so bike and focus count.
+4. Fill in the 7 `days` and the `sessions`.
+5. Run:
 
 ```sh
-python3 build.py && node print.js
+python3 ../_tn/build.py week2.json --pdf
 ```
 
-![[October_2026_W1_TN.pdf]]
+If the page count isn't a multiple of 4, blank NOTES pages are added so every A4 sheet is full.

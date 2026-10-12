@@ -303,3 +303,34 @@ body.print { background: #fff; }
 .tocdays span { text-align: center; font: 800 5pt/1.1 'Nunito'; background: #fbf1dc; border: .25mm solid var(--ink); padding: .5mm 0; }
 .tocdays small { display: block; font-size: 3.8pt; color: var(--acc); }
 .toc:last-child { border-bottom: 0; }
+
+/* ───── week at a glance ───── */
+.gl { width: 100%; border-collapse: separate; border-spacing: .5mm; font-size: 5pt; margin: -.5mm 0 1mm; }
+.gl th { text-align: left; font: 700 4.8pt 'Pixelify Sans', sans-serif; white-space: nowrap; padding-right: .5mm; }
+.gl th .ic { width: 1.9mm; height: 1.9mm; margin-right: .5mm; }
+.gl td { text-align: center; font: 800 4.9pt/1 'Nunito', sans-serif; padding: 1.15mm 0; border: .25mm solid var(--ink); }
+.gl .gh td { border: 0; padding: 0 0 .4mm; font-size: 5pt; }
+.gl .gh td small, .gl td.kd small { display: block; font-size: 3.6pt; color: var(--mut); font-weight: 700; }
+.gl td.g { background: #cfe8b8; }
+.gl td.m { background: #f8e3b4; }
+.gl td.b { background: #f3c4bb; }
+.gl td.n { background: #ece3d0; color: #a8987e; }
+.gl td.av { background: var(--paper); color: #2f5e9e; border-style: dashed; }
+.gl .gh td.av { color: var(--mut); background: none; }
+.gl td.kd { font-size: 4.3pt; padding: .7mm 0; }
+.gl td.kd small { color: inherit; opacity: .8; }
+.lg { display: inline-block; width: 1.8mm; height: 1.8mm; border: .2mm solid var(--ink); vertical-align: -.3mm; margin-left: .6mm; }
+.lg.g { background: #cfe8b8; } .lg.m { background: #f8e3b4; } .lg.b { background: #f3c4bb; }
+.glb { display: grid; grid-template-columns: 1fr 1fr; gap: 1.6mm; margin-top: 2mm; }
+.glb .best b { font-size: 5.8pt; }
+
+/* 8 tiles on one page */
+.tiles.t8 { gap: 2mm; }
+.t8 .tb { padding: 1mm 1.3mm 1.1mm; }
+.t8 .tb .big { font-size: 11pt; }
+.t8 .tl { font-size: 4.4pt; }
+.lvinfo .big em { font: 600 5pt 'Nunito'; font-style: normal; }
+.tv.sm { font-size: 7.4pt; text-transform: capitalize; }
+.miss .tm { color: var(--red); }
+.nqs .nq { margin-bottom: 1.2mm; min-height: 5.6mm; padding: .5mm 1.3mm; }
+.lines { height: 96mm; background: repeating-linear-gradient(transparent 0 5.6mm, var(--line) 5.6mm 5.85mm); }
