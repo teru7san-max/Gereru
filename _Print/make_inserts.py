@@ -36,7 +36,7 @@ FAINT = (0.88, 0.88, 0.88)
 
 SYMBOLS = [
     ("★", "insight", "шинээр ойлгосон"),
-    ("♥", "resonates", "надад хүрсэн"),
+    ("♪", "resonates", "надад хүрсэн"),
     ("?", "question", "эргэлзээ, судлах"),
     ("✗", "disagree", "санал нийлэхгүй"),
     ("↻", "review", "эргэж унших"),
@@ -45,7 +45,7 @@ SYMBOLS = [
 
 # Concept-tag families. Each family has one hand-drawable icon (24-unit grid,
 # absolute SVG path commands M/L/C/Q/Z; "circle cx cy r" for circles).
-# Icons avoid the response-tag symbols (★ ♥ ? ✗ ↻ ●) so the two never mix.
+# Icons avoid the response-tag symbols (★ ♪ ? ✗ ↻ ●) so the two never mix.
 TAGS = [
     ("Mind", "cloud", "thinking · overthinking · rumination · intuition · mental-clarity · attention"),
     ("Emotions", "wave", "emotions · fear · joy · self-compassion · emotional-regulation"),
@@ -54,7 +54,7 @@ TAGS = [
     ("Freedom & acceptance", "balloon", "suffering · letting-go · acceptance · non-resistance · presence · lightness"),
     ("Hope & inner", "helix", "hope · inner-wisdom · meaning · growth · spirituality"),
     ("Action & craft", "mountain", "resistance · professionalism · consistency · creativity · courage · craft"),
-    ("Love", "infinity", "love · compassion · romantic-love · trust · intimacy · connection · relationships"),
+    ("Love", "heart", "love · compassion · romantic-love · trust · intimacy · connection · relationships"),
 ]
 
 ICONS = {
@@ -68,8 +68,8 @@ ICONS = {
               "M5 12 C5 8.7 19 8.7 19 12 C19 15.3 5 15.3 5 12 Z",
               "M5 17.5 C5 14.2 19 14.2 19 17.5 C19 20.8 5 20.8 5 17.5 Z"],
     "mountain": ["M2.5 20 L9.5 6 L14 14 L16.5 10 L21.5 20 Z"],
-    "infinity": ["M12 12 C9 7.5 4 7.5 4 12 C4 16.5 9 16.5 12 12 C15 7.5 20 7.5 20 12 "
-                 "C20 16.5 15 16.5 12 12 Z"],
+    "heart": ["M12 20 C5 15 3 11.5 3 8.5 C3 6 5 4 7.5 4 C9.5 4 11 5.2 12 7 "
+              "C13 5.2 14.5 4 16.5 4 C19 4 21 6 21 8.5 C21 11.5 19 15 12 20 Z"],
 }
 
 
