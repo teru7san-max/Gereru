@@ -105,6 +105,15 @@ Keep ordinary passages concise. Go deep when asked for a full philosophical expl
 
 Use `_Templates/Passage.md` for the note format.
 
+## Paper notebook (88 × 125 mm traveler's notebook)
+
+Paper is for capture and practice. Obsidian is the archive and the connection map. Don't rebuild the tag system on paper.
+
+- **Унших (Reading log):** chronological across all books. Each entry has a date, a book abbreviation, a page number, a key phrase (not the full quote), a one-line "→" thought, one primary `#tag` and a circled symbol. Book abbreviations are listed on page 3 of the insert (DBET, ALM, WOA, …).
+- **Хэрэгжүүлэх (Practice log):** one page per real-life attempt, with the situation, the usual reaction, what was done differently, what was noticed, and "Болсон уу? тийм / хэсэгчлэн / үгүй". These pages are the evidence for `active`. A single attempt isn't `active`; repeated practice that starts changing the pattern is.
+- Symbols map to response tags: ★ insight · ♥ resonates · ? question · ✗ disagree · ↻ review · ● active. When the user sends a photo or transcription, turn each entry into a note (or update an existing one) using these mappings. Fill in the full quote only from text the user provides, never from memory.
+- The printable inserts and their generator live in `_Print/`.
+
 ## Books in play
 
 - **Don't Believe Everything You Think** (Joseph Nguyen). Overthinking, suffering, thought and feeling, inner wisdom, acceptance, peace. Keep these apart: a thought and the reality it describes; an emotion and the interpretation attached to it; letting an emotion settle and suppressing it; accepting reality and passively giving up; trusting intuition and treating every feeling as infallible.
