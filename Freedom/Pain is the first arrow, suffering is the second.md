@@ -5,9 +5,9 @@ notebook: Freedom
 primary: suffering
 tags: [suffering, non-resistance, acceptance]
 source:
-  author: to confirm (likely Joseph Nguyen)
-  book: to confirm (likely Don't Believe Everything You Think)
-  location: to confirm
+  author: Joseph Nguyen
+  book: Don't Believe Everything You Think
+  location: ""  # chapter/page to fill in
 created: 2026-10-12
 ---
 

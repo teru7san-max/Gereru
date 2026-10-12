@@ -5,9 +5,9 @@ notebook: Philosophy & Wisdom
 primary: inner-wisdom
 tags: [inner-wisdom, spirituality, thinking]
 source:
-  author: to confirm (likely Joseph Nguyen)
-  book: to confirm (likely Don't Believe Everything You Think)
-  location: to confirm
+  author: Joseph Nguyen
+  book: Don't Believe Everything You Think
+  location: ""  # chapter/page to fill in
 created: 2026-10-12
 ---
 
@@ -22,7 +22,7 @@ created: 2026-10-12
 >
 > Don't try to use your intellect to figure it out — you won't. As soon as you intellectualize it, you've missed it. The truth does not come from memorizing a sentence or two.
 >
-> — source to confirm
+> — Joseph Nguyen, *Don't Believe Everything You Think*
 
 ## Meaning
 

@@ -6,8 +6,8 @@ primary: letting-go
 tags: [letting-go, fear, suffering]
 source:
   author: Thich Nhat Hanh (as attributed)
-  book: quoted as an epigraph in a book to confirm (likely Joseph Nguyen, Don't Believe Everything You Think)
-  location: to confirm; original source of the quote not verified
+  book: quoted as an epigraph in Joseph Nguyen, Don't Believe Everything You Think
+  location: ""  # chapter/page to fill in; original source of the quote not verified
 created: 2026-10-12
 ---
 
@@ -15,7 +15,7 @@ created: 2026-10-12
 
 > [!quote] Passage (exact)
 > People have a hard time letting go of their suffering. Out of a fear of the unknown, they prefer suffering that is familiar.
-> — Thich Nhat Hanh, as quoted by the author
+> — Thich Nhat Hanh, as quoted in Joseph Nguyen, *Don't Believe Everything You Think*
 
 ## Meaning
 
