@@ -1,6 +1,6 @@
 ---
 title: We want the feeling, not the thing
-aliases: [Бид юмыг биш, мэдрэмжийг хүсдэг]
+aliases: ["Бид юмыг биш, мэдрэмжийг хүсдэг"]
 notebook: Philosophy & Wisdom
 primary: desire
 tags: [desire, happiness, inner-wisdom]

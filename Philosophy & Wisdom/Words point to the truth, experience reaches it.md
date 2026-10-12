@@ -1,6 +1,6 @@
 ---
 title: Words point to the truth, experience reaches it
-aliases: [Үг үнэн рүү заадаг, туршлага түүнд хүрдэг, The familiar unfamiliar feeling]
+aliases: ["Үг үнэн рүү заадаг, туршлага түүнд хүрдэг", The familiar unfamiliar feeling]
 notebook: Philosophy & Wisdom
 primary: inner-wisdom
 tags: [inner-wisdom, spirituality, thinking]
