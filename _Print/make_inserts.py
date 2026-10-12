@@ -43,16 +43,93 @@ SYMBOLS = [
     ("●", "active", "бодитоор хэрэгжүүлсэн"),
 ]
 
+# Concept-tag families. Each family has one hand-drawable icon (24-unit grid,
+# absolute SVG path commands M/L/C/Q/Z; "circle cx cy r" for circles).
+# Icons avoid the response-tag symbols (★ ♥ ? ✗ ↻ ●) so the two never mix.
 TAGS = [
-    ("Mind", "thinking · overthinking · rumination · intuition · mental-clarity · attention"),
-    ("Emotions", "emotions · fear · joy · self-compassion · emotional-regulation"),
-    ("Desire", "desire · happiness · peace · envy · attachment · freedom"),
-    ("Self", "authenticity · self-love · self-awareness · values · identity"),
-    ("Freedom", "suffering · letting-go · acceptance · non-resistance · presence · lightness"),
-    ("Inner", "hope · inner-wisdom · meaning · growth · spirituality"),
-    ("Action", "resistance · professionalism · consistency · creativity · courage · craft"),
-    ("Love", "love · compassion · romantic-love · trust · intimacy · connection · relationships"),
+    ("Mind", "cloud", "thinking · overthinking · rumination · intuition · mental-clarity · attention"),
+    ("Emotions", "wave", "emotions · fear · joy · self-compassion · emotional-regulation"),
+    ("Desire & happiness", "diamond", "desire · happiness · peace · envy · attachment · freedom"),
+    ("Self", "eye", "authenticity · self-love · self-awareness · values · identity"),
+    ("Freedom & acceptance", "balloon", "suffering · letting-go · acceptance · non-resistance · presence · lightness"),
+    ("Hope & inner", "helix", "hope · inner-wisdom · meaning · growth · spirituality"),
+    ("Action & craft", "mountain", "resistance · professionalism · consistency · creativity · courage · craft"),
+    ("Love", "infinity", "love · compassion · romantic-love · trust · intimacy · connection · relationships"),
 ]
+
+ICONS = {
+    "cloud": ["M7 18 L17 18 C20 18 21.5 15.5 20.5 13.2 C19.7 11.5 18 11 17 11.2 "
+              "C16.5 8 14 6 11.5 6 C8.5 6 6.5 8.2 6.3 10.8 C4 11 2.5 12.8 2.8 15 C3.1 16.8 4.8 18 7 18 Z"],
+    "wave": ["M2 12 Q4.5 6.5 7 12 Q9.5 17.5 12 12 Q14.5 6.5 17 12 Q19.5 17.5 22 12"],
+    "diamond": ["M12 3 L20 12 L12 21 L4 12 Z"],
+    "eye": ["M2 12 Q12 2.5 22 12 Q12 21.5 2 12 Z", "circle 12 12 3"],
+    "balloon": ["circle 12 9 6", "M12 15 Q9.8 17.8 12 19.5 Q14.2 21.2 12 23"],
+    "helix": ["M5 6.5 C5 3.2 19 3.2 19 6.5 C19 9.8 5 9.8 5 6.5 Z",
+              "M5 12 C5 8.7 19 8.7 19 12 C19 15.3 5 15.3 5 12 Z",
+              "M5 17.5 C5 14.2 19 14.2 19 17.5 C19 20.8 5 20.8 5 17.5 Z"],
+    "mountain": ["M2.5 20 L9.5 6 L14 14 L16.5 10 L21.5 20 Z"],
+    "infinity": ["M12 12 C9 7.5 4 7.5 4 12 C4 16.5 9 16.5 12 12 C15 7.5 20 7.5 20 12 "
+                 "C20 16.5 15 16.5 12 12 Z"],
+}
+
+
+def _parse(d):
+    import re
+    toks = re.findall(r"[MLCQZ]|-?[0-9.]+", d)
+    out, i, cur = [], 0, (0, 0)
+    while i < len(toks):
+        cmd = toks[i]; i += 1
+        if cmd == "Z":
+            out.append(("Z",)); continue
+        n = {"M": 2, "L": 2, "C": 6, "Q": 4}[cmd]
+        v = [float(t) for t in toks[i:i + n]]; i += n
+        if cmd == "Q":  # convert to cubic
+            qx, qy, x, y = v
+            v = [cur[0] + 2 / 3 * (qx - cur[0]), cur[1] + 2 / 3 * (qy - cur[1]),
+                 x + 2 / 3 * (qx - x), y + 2 / 3 * (qy - y), x, y]
+            cmd = "C"
+        out.append((cmd, *v))
+        cur = (v[-2], v[-1])
+    return out
+
+
+def draw_icon(c, name, x, y, size, color=INK, width=0.7):
+    """Draw an icon with its bottom-left corner at (x, y), size in points."""
+    k = size / 24
+    c.saveState()
+    c.setStrokeColorRGB(*color)
+    c.setLineWidth(width)
+    c.setLineCap(1)
+    c.setLineJoin(1)
+    for d in ICONS[name]:
+        if d.startswith("circle"):
+            _, cx, cy, r = d.split()
+            c.circle(x + float(cx) * k, y + (24 - float(cy)) * k, float(r) * k, stroke=1, fill=0)
+            continue
+        path = c.beginPath()
+        for seg in _parse(d):
+            pts = [(x + seg[j] * k, y + (24 - seg[j + 1]) * k) for j in range(1, len(seg), 2)]
+            if seg[0] == "M":
+                path.moveTo(*pts[0])
+            elif seg[0] == "L":
+                path.lineTo(*pts[0])
+            elif seg[0] == "C":
+                path.curveTo(*pts[0], *pts[1], *pts[2])
+            else:
+                path.close()
+        c.drawPath(path, stroke=1, fill=0)
+    c.restoreState()
+
+
+def icon_svg(name, stroke="currentColor"):
+    parts = []
+    for d in ICONS[name]:
+        if d.startswith("circle"):
+            _, cx, cy, r = d.split()
+            parts.append(f'<circle cx="{cx}" cy="{cy}" r="{r}"/>')
+        else:
+            parts.append(f'<path d="{d}"/>')
+    return "".join(parts)
 
 BOOKS = [
     ("DBET", "Don't Believe Everything You Think", "J. Nguyen"),
@@ -254,13 +331,14 @@ def weekly_transfer(p):
 
 def tag_list(p):
     y = p.heading("Tag-ууд")
-    for group, tags in TAGS:
-        p.text(p.x0, y, group, font="Sans-B", size=5.6)
-        y = p.wrap(p.x0 + 2 * mm, y - 3.2 * mm, tags, p.width - 2 * mm, size=5.1, color=SOFT)
-        y -= 1.6 * mm
-    y -= 1 * mm
-    p.wrap(p.x0, y, "Шинэ tag зөвхөн үнэхээр өөр санаа гарч ирэхэд. Эхлээд байгаа tag-аа ашигла.",
-           p.width, size=5.1, color=SOFT)
+    for group, icon, tags in TAGS:
+        draw_icon(p.c, icon, p.x0, y - 1.3 * mm, 3.6 * mm, width=0.6)
+        p.text(p.x0 + 5 * mm, y, group, font="Sans-B", size=5.6)
+        y = p.wrap(p.x0 + 5 * mm, y - 3.1 * mm, tags, p.width - 5 * mm, size=5.0, color=SOFT)
+        y -= 1.4 * mm
+    y -= 0.6 * mm
+    p.wrap(p.x0, y, "Дүрс = гэр бүл. Дүрсээ зураад, tag-аа үгээр бич. "
+           "Шинэ tag зөвхөн үнэхээр өөр санаа гарч ирэхэд.", p.width, size=5.0, color=SOFT)
 
 
 def build_reading(c):
@@ -479,7 +557,28 @@ def impose(reader, name, out_path):
         writer.write(f)
 
 
+def write_tag_svg(path):
+    """Icon key for viewing inside Obsidian (adapts to light and dark themes)."""
+    row, w = 64, 640
+    h = 70 + row * len(TAGS) + 20
+    out = [f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {w} {h}" width="{w}" '
+           f'font-family="system-ui, -apple-system, Segoe UI, sans-serif">',
+           '<style>.fg{fill:#222}.mut{fill:#666}.ic{stroke:#222}'
+           '@media (prefers-color-scheme: dark){.fg{fill:#eee}.mut{fill:#aaa}.ic{stroke:#eee}}</style>',
+           '<text class="fg" x="24" y="42" font-size="22" font-weight="700">Tag families</text>']
+    for i, (group, icon, tags) in enumerate(TAGS):
+        y = 70 + i * row
+        out.append(f'<g class="ic" transform="translate(24 {y + 6}) scale(1.6)" fill="none" '
+                   f'stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">'
+                   f'{icon_svg(icon)}</g>')
+        out.append(f'<text class="fg" x="80" y="{y + 22}" font-size="16" font-weight="700">{group}</text>')
+        out.append(f'<text class="mut" x="80" y="{y + 44}" font-size="13">{tags}</text>')
+    out.append("</svg>")
+    path.write_text("\n".join(out), encoding="utf-8")
+
+
 def main():
+    write_tag_svg(OUT / "tag-icons.svg")
     reading = render(build_reading, "Унших · Reading log")
     practice = render(build_practice, "Хэрэгжүүлэх · Practice log")
 
