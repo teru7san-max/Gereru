@@ -12,7 +12,16 @@ Week 1 (10.1–10.7) laid out as 82×116 mm traveler's-notebook cards in the sty
 - **PDF to print (A4, 4 cards per sheet, crop marks, sheets in reverse order):** [[October_2026_W1_TN_print_A4_reversed.pdf]]. Print at 100% and check the 90 mm scale bar.
 - **HTML:** `week1-tn.html` (open in a browser)
 
-24 pages: cover · weekly average ×2 · habit grid · XP journey · XP quest board · 7 day cards + 5 gym cards · best moments ×2 · Σ totals · achievements · week 2 quests · week 1 cleared.
+28 pages: cover · weekly average ×2 · habit grid · XP journey · XP quest board · 7 day cards + 5 gym cards · best moments ×3 · Σ totals · achievements · what I lacked ×2 · week 2 quests · week 2 XP log · week 1 cleared.
+
+## What I lacked (p.24–25)
+
+Earned **2,640 of 7,900 XP (33%)** the quest board could pay.
+
+- **Sleep, −1,650 XP:** average bedtime 05:46, never asleep before 12A, sleep score never 80+ (best 77), 8h+ only 2 of 7 nights.
+- **Food, −910 XP:** averaged 2,953 kcal against the 2,400 line, never ≤2,500 kcal with 150g protein, and 10.4 and 10.5 weren't logged.
+- **Burn and push-ups, −1,050 XP:** never burned 1,000 kcal (peak 824) and never did 100 push-ups (best 60).
+- **Smaller gaps:** spent ≤ ¥80 on only 2 of 7 days, no gym session rated 9+, only one leg day (9 sets, no hamstring or calf work), and 10.4 was a 0 XP day.
 
 To rebuild after editing the data in `build.py`:
 

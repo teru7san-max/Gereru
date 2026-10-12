@@ -155,10 +155,12 @@ SESSIONS = {
 KIND = {"push": ("PUSH DAY", "#f3c24f", "#7a5410"), "pull": ("PULL DAY", "#8fc0ea", "#1f4f86"),
         "leg": ("LEG DAY", "#f6b77c", "#8a3f12")}
 
-MOMENTS = [("10.1-2", "10.1", "сарын эхний орой"), ("10.2-3", "10.2", "нуруу + кардио"),
-           ("10.3-8", "10.3", "орой нь жимдсэн"), ("10.4-4", "10.4", "эгчийнд"),
+MOMENTS = [("10.1-2", "10.1", "аниме үзсэн орой"), ("10.2-2", "10.2", "кардио · 30:08"),
+           ("10.2-3", "10.2", "нуруу хийсэн өдөр"), ("10.3-1", "10.3", "юмаа хийж суусан"),
+           ("10.3-2", "10.3", "нохойтой таарсан"), ("10.3-8", "10.3", "орой нь жимдсэн"),
+           ("10.4-3", "10.4", "эгчийнд явах замд"), ("10.4-4", "10.4", "эгчийнд"),
            ("10.4-5", "10.4", "кино үзсэн"), ("10.5-2", "10.5", "Kaide · хичээл"),
-           ("10.6-2", "10.6", "хүйтэн өдөр"), ("10.7-1", "10.7", "сагс · амралт дууслаа")]
+           ("10.6-3", "10.6", "хүйтэн өдөр · жим"), ("10.7-1", "10.7", "сагс · амралт дууслаа")]
 
 # ───────────────────────────── pixel icons ─────────────────────────────
 PAL = {"K": "#3a2a1f", "W": "#fff9ec", "R": "#d0453a", "O": "#e8862e", "Y": "#f2c443", "G": "#5c9a3c",
@@ -425,7 +427,7 @@ def p_cover():
   <div class="box stat">{icon("moon")}<small>SLEEP / NIGHT</small><b>7h12m</b></div>
   <div class="box stat">{icon("gem")}<small>TOTAL XP</small><b>{TOTAL_XP:,}</b></div>
 </div>
-<div class="cnote">10.1 → 10.7 · 7 days logged · 5 gym sessions · 2 sport · 30 snapshots</div>'''
+<div class="cnote">10.1 → 10.7 · 7 days logged · 5 gym sessions · 2 sport · 30 snapshots · what I lacked → p.{PAGE_NO["lack1"]}</div>'''
     return card(body, 1, "cover")
 
 
@@ -609,7 +611,7 @@ def photos(d, maxh=22, maxw=74):
     cols = -(-n // rows)
     h = min(maxh / rows - 0.6, (maxw / max(cols, 2) - 0.8) * 0.75)
     w = h / 0.75
-    imgs = "".join(f'<img src="photos/{d["d"]}-{i}.png" style="width:{w:.2f}mm;height:{h:.2f}mm">'
+    imgs = "".join(f'<img src="photos/{d["d"]}-{i}.jpg" style="width:{w:.2f}mm;height:{h:.2f}mm">'
                    for i in range(1, n + 1))
     return f'<div class="strip" style="max-width:{cols * (w + 0.8):.2f}mm">{imgs}</div>'
 
@@ -735,9 +737,9 @@ def p_ex(day):
 def p_moments(part):
     items = MOMENTS[(part - 1) * 4: part * 4]
     tilt = [-1.6, 1.2, 1.4, -1.1]
-    pol = "".join(f'<div class="pol" style="transform:rotate({tilt[i]}deg)"><img src="photos/{f}.png">'
+    pol = "".join(f'<div class="pol" style="transform:rotate({tilt[i]}deg)"><img src="photos/{f}.jpg">'
                   f'<div class="cap"><b>{dd}</b> {c}</div></div>' for i, (f, dd, c) in enumerate(items))
-    body = hdr("camera", "BEST MOMENTS", f"{part} / 2") + f'<div class="pols">{pol}</div>'
+    body = hdr("camera", "BEST MOMENTS", f"{part} / 3") + f'<div class="pols">{pol}</div>'
     return card(body, PAGE_NO[f"m{part}"])
 
 
@@ -815,13 +817,88 @@ def p_clear():
     return card(body, PAGE_NO["clear"], "cover")
 
 
+# what was missing: earned XP vs the most each quest could pay this week
+LACK_MAX = [("sleep", 1750, "250 × 7 nights"), ("food", 1400, "200 × 7 days"), ("burn", 700, "100 × 7"),
+            ("sport", 700, "100 × 7"), ("steps", 1050, "150 × 7"), ("push", 350, "50 × 7"),
+            ("gym", 1250, "250 × 5 sessions"), ("spend", 350, "50 × 7"), ("pull", 350, "50 × 7")]
+
+
+def p_lack1():
+    lab = {k: (l, ic) for k, l, _, ic in QUESTS}
+    rows, tot_max = [], 0
+    for k, mx, note in sorted(LACK_MAX, key=lambda r: -(r[1] - qxp(r[0]))):
+        got = qxp(k)
+        tot_max += mx
+        l, ic = lab[k]
+        rows.append(f'<div class="lrow">{icon(ic)}<span>{l}</span><i><b style="width:{got / mx * 100:.0f}%"></b></i>'
+                    f'<em>{got:,}<small> / {mx:,}</small></em><strong>−{mx - got:,}</strong></div>')
+    pct = round(100 * TOTAL_XP / tot_max)
+    gaps = [
+        ("moon", "SLEEP", "−1,650 XP", "avg bed 05:46 · before 12A 0 / 7 · score 80+ 0 / 7 (best 77) · 8h+ only 2 / 7"),
+        ("apple", "FOOD", "−910 XP", "avg 2,953 kcal vs 2,400 line · ≤2500 + P150g 0 days · 10.4, 10.5 not logged · 10.1 = 4,372"),
+        ("flame", "BURN & PUSH-UPS", "−1,050 XP", "1000 kcal never (peak 824) · 100 push-ups never (best 60)"),
+    ]
+    g = "".join(f'<div class="box gap">{icon(i)}<div><b>{t} <em>{x}</em></b><small>{s}</small></div></div>'
+                for i, t, x, s in gaps)
+    body = (hdr("target", "WHAT I LACKED", "1 / 2 · XP left on the table") +
+            f'<div class="box lackbox"><div class="lhead"><div class="ring" style="--p:{pct}"><b>{pct}%</b></div>'
+            f'<div><b>{TOTAL_XP:,} of {tot_max:,} XP</b><small>earned vs the most the quest board could pay in week 1</small></div></div>'
+            f'{"".join(rows)}<div class="legend"><span class="sw"></span> earned · empty = missed · red = XP lost</div></div>'
+            f'<div class="sub">3 BIGGEST GAPS</div>{g}')
+    return card(body, PAGE_NO["lack1"])
+
+
+def p_lack2():
+    items = [
+        ("moon", "Asleep before 12A", 0, 7, "earliest 03:15 (10.5)"),
+        ("moon", "Sleep score 80+", 0, 7, "best 77 (10.2)"),
+        ("moon", "8h+ sleep", 2, 7, "10.2 · 10.5"),
+        ("apple", "Food logged", 5, 7, "missed 10.4 · 10.5"),
+        ("apple", "Protein 150g+", 2, 7, "10.1 180g · 10.6 156g"),
+        ("apple", "Under 2,700 kcal", 3, 7, "10.3 · 10.6 · 10.7"),
+        ("flame", "Burn 1000+ kcal", 0, 7, "peak 824 (10.3)"),
+        ("pushup", "100 push-ups", 0, 7, "best 60 · total 200"),
+        ("coin", "Spend ≤ ¥80", 2, 7, "avg ¥103 / day"),
+        ("dumbbell", "Gym rated 9+", 0, 5, "best 8 (10.1 · 10.5)"),
+        ("pullup", "30 pull-ups on gym day", 3, 5, "10.2 = 27 · 10.3 = 0"),
+        ("ball", "Sport day", 2, 7, "cardio 10.2 · basket 10.7"),
+        ("shoe", "10k steps", 6, 7, "10.4 = 4.6k"),
+    ]
+    rows = "".join(
+        f'<div class="lk2">{icon(i)}<span>{t}<small>{s}</small></span>'
+        f'<i>{"".join(f"<b class=on></b>" if j < n else "<b></b>" for j in range(m))}</i>'
+        f'<em class="{"zero" if n == 0 else ("ok" if n / m >= .7 else "")}">{n}/{m}</em></div>'
+        for i, t, n, m, s in items)
+    fixes = [("moon", "Lights out before 2A first, then 12A · even 1 of 3 = +50 a night"),
+             ("apple", "Log every meal · hit 150g protein under 2,500 kcal = +200"),
+             ("dumbbell", "Legs need hamstring + calf · aim one session rated 9+"),
+             ("pushup", "Spread push-ups: 4 × 25 through the day = 100")]
+    f = "".join(f'<div class="fix">{icon(i)}{t}</div>' for i, t in fixes)
+    body = (hdr("target", "WHAT I LACKED", "2 / 2 · days hit") + f'<div class="box lk2box">{rows}</div>'
+            f'<div class="box fixbox"><div class="nh">{icon("pen")}FIX NEXT WEEK</div>{f}</div>')
+    return card(body, PAGE_NO["lack2"])
+
+
+def p_log():
+    days = [("10.8", "THU"), ("10.9", "FRI"), ("10.10", "SAT"), ("10.11", "SUN"), ("10.12", "MON"),
+            ("10.13", "TUE"), ("10.14", "WED")]
+    keys = QUESTS + LOCKED
+    head = "".join(f"<th>{icon(ic)}</th>" for _, _, _, ic in keys)
+    rows = "".join(f'<tr><td class="dd">{d}<small>{w}</small></td>' + "".join('<td><span class="cb"></span></td>' for _ in keys)
+                   + '<td class="xpw"></td></tr><tr class="nl"><td></td><td colspan="12"></td></tr>' for d, w in days)
+    body = (hdr("notes", "WEEK 2 XP LOG", "write it down") +
+            f'<table class="wlog"><tr><th>day</th>{head}<th>XP</th></tr>{rows}</table>'
+            f'<div class="box wsum"><span>Σ week 2</span><i></i><span>XP · LV 3 → 4 needs 360</span></div>')
+    return card(body, PAGE_NO["log"])
+
+
 # page order
 ORDER = ["cover", "avg1", "avg2", "habits", "journey", "board"]
 for d in DAYS:
     ORDER.append(d["d"])
     if d["d"] in SESSIONS:
         ORDER.append(d["d"] + "x")
-ORDER += ["m1", "m2", "tot", "ach", "next", "clear"]
+ORDER += ["m1", "m2", "m3", "tot", "ach", "lack1", "lack2", "next", "log", "clear"]
 for i, k in enumerate(ORDER, 1):
     PAGE_NO[k] = i
 
@@ -845,12 +922,18 @@ def build_cards():
             out.append(p_ex(k[:-1]))
         elif k[0] == "1":
             out.append(p_day(next(d for d in DAYS if d["d"] == k)))
-        elif k in ("m1", "m2"):
+        elif k in ("m1", "m2", "m3"):
             out.append(p_moments(int(k[1])))
         elif k == "tot":
             out.append(p_totals())
         elif k == "ach":
             out.append(p_achieve())
+        elif k == "lack1":
+            out.append(p_lack1())
+        elif k == "lack2":
+            out.append(p_lack2())
+        elif k == "log":
+            out.append(p_log())
         elif k == "next":
             out.append(p_next())
         elif k == "clear":
@@ -861,7 +944,7 @@ def build_cards():
 FONTS = ('<link rel="preconnect" href="https://fonts.googleapis.com">'
          '<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>'
          '<link href="https://fonts.googleapis.com/css2?family=Jersey+10&family=Pixelify+Sans:wght@400;500;600;700'
-         '&family=Press+Start+2P&family=DotGothic16&family=Noto+Sans+SC:wght@500&display=swap" rel="stylesheet">')
+         '&family=Press+Start+2P&family=Nunito:wght@500;600;700;800&family=Noto+Sans+SC:wght@500;700&display=swap" rel="stylesheet">')
 
 
 SLOT_X = (18, 110)   # A4 = 210 × 297 mm, two 82 mm cards + 10 mm gutter
