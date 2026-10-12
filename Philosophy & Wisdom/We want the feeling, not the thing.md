@@ -49,6 +49,7 @@ Behind most wants is a feeling I expect the thing to give me, and that feeling i
 
 - **Naval Ravikant (Almanack)**, paraphrased: desire is a self-imposed condition of being unhappy until you get what you want. Naval and this passage share a diagnosis, that the wanting itself shapes the feeling. Naval also argues strongly for building wealth and pursuing goals, so he isn't saying external things don't matter. That tension is the useful part.
 - **Joseph Nguyen (Don't Believe Everything You Think)**, paraphrased: feelings come from thinking more than from circumstances. That is close to the claim "the secret lies within the feeling", and has the same limit: circumstances still count.
+- [[Words point to the truth, experience reaches it]]: the same move of looking for the answer in a feeling, within.
 - Possible links to investigate: `desire` ↔ `happiness` ↔ `attachment` ↔ `freedom`.
 
 ## Back to life
