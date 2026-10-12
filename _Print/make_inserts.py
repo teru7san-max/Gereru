@@ -559,6 +559,7 @@ def impose(reader, name, out_path):
 
 def write_tag_svg(path):
     """Icon key for viewing inside Obsidian (adapts to light and dark themes)."""
+    from xml.sax.saxutils import escape
     row, w = 64, 640
     h = 70 + row * len(TAGS) + 20
     out = [f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {w} {h}" width="{w}" '
@@ -571,8 +572,8 @@ def write_tag_svg(path):
         out.append(f'<g class="ic" transform="translate(24 {y + 6}) scale(1.6)" fill="none" '
                    f'stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">'
                    f'{icon_svg(icon)}</g>')
-        out.append(f'<text class="fg" x="80" y="{y + 22}" font-size="16" font-weight="700">{group}</text>')
-        out.append(f'<text class="mut" x="80" y="{y + 44}" font-size="13">{tags}</text>')
+        out.append(f'<text class="fg" x="80" y="{y + 22}" font-size="16" font-weight="700">{escape(group)}</text>')
+        out.append(f'<text class="mut" x="80" y="{y + 44}" font-size="13">{escape(tags)}</text>')
     out.append("</svg>")
     path.write_text("\n".join(out), encoding="utf-8")
 

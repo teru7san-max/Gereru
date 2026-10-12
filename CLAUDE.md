@@ -112,6 +112,7 @@ Paper is for capture and practice. Obsidian is the archive and the connection ma
 - **Унших (Reading log):** chronological across all books. Each entry has a date, a book abbreviation, a page number, a key phrase (not the full quote), a one-line "→" thought, one primary `#tag` and a circled symbol. Book abbreviations are listed on page 3 of the insert (DBET, ALM, WOA, …).
 - **Хэрэгжүүлэх (Practice log):** one page per real-life attempt, with the situation, the usual reaction, what was done differently, what was noticed, and "Болсон уу? тийм / хэсэгчлэн / үгүй". These pages are the evidence for `active`. A single attempt isn't `active`; repeated practice that starts changing the pattern is.
 - Symbols map to response tags: ★ insight · ♥ resonates · ? question · ✗ disagree · ↻ review · ● active. When the user sends a photo or transcription, turn each entry into a note (or update an existing one) using these mappings. Fill in the full quote only from text the user provides, never from memory.
+- Concept-tag families each have a hand-drawn icon, written before the tag word: cloud = Mind · wave = Emotions · diamond = Desire & happiness · eye = Self · balloon = Freedom & acceptance · stacked coil (helix) = Hope & inner · mountain = Action & craft · ∞ = Love. The icon shows the family; the word gives the exact tag. There are icons for families only, never for individual tags. Key: `_Print/tag-icons.svg`.
 - The printable inserts and their generator live in `_Print/`.
 
 ## Books in play
