@@ -432,7 +432,7 @@ def chrome(c, number, index_key):
     text(c, W / 2, 3.6 * mm, str(number), size=5, color=SOFT, align="center")
     hx, hy = W - 6 * mm - 2.6 * mm, H - 5.6 * mm
     home_icon(c, hx, hy)
-    c.linkRect("", index_key, (hx - 1.5 * mm, hy - 1.5 * mm, hx + 4.1 * mm, hy + 4.1 * mm),
+    c.linkRect("", index_key, (hx - 2.2 * mm, hy - 2.2 * mm, hx + 4.8 * mm, hy + 4.8 * mm),
                relative=0, thickness=0)
 
 
@@ -495,7 +495,7 @@ def contents_page(c, index_key, page_keys):
     text(c, p.x0, y, "Сэдэв", font="Sans-B", size=5, color=SOFT)
     text(c, p.x1, y, "х.", font="Sans-B", size=5, color=SOFT, align="right")
     y -= 1.5 * mm
-    for _ in range(9):
+    for _ in range(8):
         y -= 5.4 * mm
         stroke(c, RULE, width=0.35)
         c.line(p.x0, y, p.x1 - 8 * mm, y)
@@ -503,7 +503,7 @@ def contents_page(c, index_key, page_keys):
     y -= 7 * mm
     text(c, p.x0, y, "Хуудас руу үсрэх", font="Sans-B", size=5.2, color=SOFT)
     y -= 2.5 * mm
-    cols, cw, ch = 10, (p.x1 - p.x0) / 10, 5.6 * mm
+    cols, cw, ch = 10, (p.x1 - p.x0) / 10, 6.2 * mm
     for i, key in enumerate(page_keys):
         r, col = divmod(i, cols)
         x = p.x0 + col * cw
@@ -590,6 +590,16 @@ def build_template(kind, path):
     c.save()
 
 
+def build_single_covers(folder):
+    for nb in NOTEBOOKS:
+        c = canvas.Canvas(str(folder / f"{nb['file']} · cover.pdf"), pagesize=(W, H))
+        c.setTitle(f"{nb['file']} · cover")
+        c.setAuthor("Gereru")
+        draw_cover(c, nb)
+        c.showPage()
+        c.save()
+
+
 def build_covers_pdf(path):
     c = canvas.Canvas(str(path), pagesize=(W, H))
     c.setTitle("Covers")
@@ -611,6 +621,7 @@ def main():
     for kind in PAGE_TYPES:
         build_template(kind, OUT / "templates" / f"{kind}.pdf")
     build_covers_pdf(OUT / "covers" / "covers.pdf")
+    build_single_covers(OUT / "covers")
     export_cover_pngs(OUT / "covers" / "covers.pdf")
 
 
