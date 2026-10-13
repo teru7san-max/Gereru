@@ -141,7 +141,7 @@ def spine(c, color, width, label, label_color, font="Sans-B", size=5.2, tracking
         c.line(width + 0.9 * mm, 3 * mm, width + 0.9 * mm, H - 3 * mm)
         c.setDash()
     c.saveState()
-    c.translate(width / 2 + size * 0.36, H - 14 * mm)
+    c.translate(width / 2 - size * 0.365, H - 14 * mm)
     c.rotate(-90)
     spaced(c, 0, 0, label, font, size, label_color, tracking, align="left")
     c.restoreState()
@@ -211,15 +211,15 @@ BEAR = check([
     "...KBBBBBBBBBBBBK...",
     "..KBBBBBBBBBBBBBBK..",
     ".KBBKKKKKKKKKKKKBBK.",
-    ".KBKRPPPPPKPPPPPRKBK",
-    ".KBKRPpppPKPpppPRKBK",
-    ".KBBKRPPPPKPPPPRKBBK",
-    "..KBBKRRRRKRRRRKBBK.",
-    "..KBBBKKKKKKKKKBBBK.",
-    "..KbbBBBBBBBBBBBbbK.",
-    "...KKKKKKKKKKKKKKK..",
+    ".KBKRPPPPKKPPPPRKBK.",
+    ".KBKRPpppKKpppPRKBK.",
+    ".KBBKRPPPKKPPPRKBBK.",
+    "..KBBKRRRKKRRRKBBK..",
+    "..KBBBKKKKKKKKBBBK..",
+    "..KbbBBBBBBBBBBbbK..",
+    "...KKKKKKKKKKKKKK...",
 ])
-BEAR = [r.ljust(20, ".")[:20] for r in BEAR]
+assert all(r == r[::-1] for r in BEAR), "bear art must be mirror-symmetric"
 BEAR_PAL = {
     "K": "#3b2a20", "B": "#8a5a3c", "b": "#6b4430", "L": "#dcb791", "E": "#1e1410",
     "N": "#2a1a12", "P": "#f4ecd8", "p": "#c9bd9f", "R": "#b5523b",
@@ -356,11 +356,14 @@ def draw_cat(c, ox, oy, k, ink=(0.08, 0.08, 0.08), bg=(1, 1, 1), label=True):
     fill(c, ink)
     c.ellipse(ox + 45.8 * k, oy + 84.6 * k, ox + 48.2 * k, oy + 86.2 * k, stroke=0, fill=1)
     if label:
-        c.saveState()
-        c.translate(ox + 76 * k, oy + 36 * k)
-        c.rotate(-32)
-        text(c, 0, 0, "hmm~", font="Sans-B", size=8.5 * k / (0.44 * mm), color=ink)
-        c.restoreState()
+        # thought bubble above the head: two trailing dots and a "?"
+        stroke(c, ink, width=1.1 * k)
+        fill(c, bg)
+        c.circle(ox + 70 * k, oy + 112 * k, 1.6 * k, stroke=1, fill=1)
+        c.circle(ox + 75 * k, oy + 119 * k, 2.6 * k, stroke=1, fill=1)
+        c.ellipse(ox + 76 * k, oy + 123 * k, ox + 96 * k, oy + 139 * k, stroke=1, fill=1)
+        text(c, ox + 86 * k, oy + 127.5 * k, "?", font="Sans-B", size=9 * k / (0.44 * mm), color=ink,
+             align="center")
 
 
 CREAM = hexrgb("#F1EDE4")
@@ -374,9 +377,9 @@ def cat_cover(c, title, subtitle, tagline, seed):
           tracking=0.5, stitches=False)
     # small bracketed motto at the bottom of the spine
     c.saveState()
-    c.translate(sw / 2 + 1.8, 34 * mm)
+    c.translate(sw / 2 - 4.4 * 0.365, 30 * mm)
     c.rotate(-90)
-    text(c, 0, 0, "( one quiet page a day )", font="Sans", size=4.4, color=CREAM)
+    text(c, 0, 0, "GERERU · 88×125", font="Sans", size=4.4, color=CREAM)
     c.restoreState()
     x0, x1 = sw, W
     tx = x1 - 6 * mm
@@ -397,9 +400,10 @@ def cat_back(c, seed):
     draw_cat(c, cx - 50 * k, H / 2 - 6 * mm, k, ink=BLACK, bg=CREAM, label=False)
     stroke(c, BLACK, width=0.3)
     c.line(6 * mm, 17 * mm, W - 18.5 * mm, 17 * mm)
-    text(c, 6 * mm, 12.8 * mm, "Gereru · Сэтгэх", font="Sans-B", size=5, color=BLACK)
-    text(c, 6 * mm, 9.4 * mm, "88 × 125 mm · 60 хуудас · dot grid", font="Sans", size=4.3, color=BLACK)
-    text(c, 6 * mm, 6.4 * mm, "Read → Capture → Understand → Connect → Review", font="Sans", size=3.6, color=SOFT)
+    text(c, 6 * mm, 13 * mm, "Gereru · Сэтгэх", font="Sans-B", size=5, color=BLACK)
+    text(c, 6 * mm, 9.6 * mm, "88 × 125 mm · 60 хуудас · dot grid", font="Sans", size=4.3, color=BLACK)
+    text(c, 6 * mm, 6.6 * mm, "Read → Capture → Understand → Connect →", font="Sans", size=3.6, color=SOFT)
+    text(c, 6 * mm, 4.4 * mm, "Question → Reflect → Apply → Review", font="Sans", size=3.6, color=SOFT)
     rounded_corner_mask(c)
 
 
@@ -440,15 +444,20 @@ def page_blank(c, p):
     pass
 
 
+def grid_extent(p, step, top=H - 9 * mm, bottom=7 * mm):
+    """Whole-step grid, centred horizontally: (x0, x1, y_top, y_bottom, ncols, nrows)."""
+    ncols = int((p.x1 - p.x0) // step)
+    nrows = int((top - bottom) // step)
+    x0 = (W - ncols * step) / 2
+    return x0, x0 + ncols * step, top, top - nrows * step, ncols, nrows
+
+
 def page_dot(c, p, step=5 * mm):
+    x0, _, top, _, ncols, nrows = grid_extent(p, step)
     fill(c, DOT)
-    y = H - 9 * mm
-    while y > 7 * mm:
-        x = p.x0
-        while x <= p.x1 + 0.1:
-            c.circle(x, y, 0.36, stroke=0, fill=1)
-            x += step
-        y -= step
+    for r in range(nrows + 1):
+        for k in range(ncols + 1):
+            c.circle(x0 + k * step, top - r * step, 0.36, stroke=0, fill=1)
 
 
 def page_lined(c, p, pitch=6 * mm):
@@ -460,15 +469,12 @@ def page_lined(c, p, pitch=6 * mm):
 
 
 def page_grid(c, p, step=5 * mm):
+    x0, x1, top, bottom, ncols, nrows = grid_extent(p, step)
     stroke(c, tint(RULE, 0.75), width=0.3)
-    x = p.x0
-    while x <= p.x1 + 0.1:
-        c.line(x, 7 * mm, x, H - 9 * mm)
-        x += step
-    y = H - 9 * mm
-    while y >= 7 * mm - 0.1:
-        c.line(p.x0, y, p.x1, y)
-        y -= step
+    for k in range(ncols + 1):
+        c.line(x0 + k * step, bottom, x0 + k * step, top)
+    for r in range(nrows + 1):
+        c.line(x0, top - r * step, x1, top - r * step)
 
 
 def page_reading(c, p):
@@ -517,6 +523,11 @@ def contents_page(c, index_key, page_keys):
 
 # ---------- notebooks ----------
 
+GUIDE_PAGES = {
+    "reading": [("Хэрхэн бичих вэ", mi.reading_key), ("Номын товчлол", mi.reading_books)],
+    "practice": [("Энэ дэвтэр юунд вэ", mi.practice_guide)],
+}
+
 NOTEBOOKS = [
     {"file": "Унших · Reading log", "cover": ("retro", "yellow"), "pages": "reading",
      "title": "Унших", "subtitle": "Reading log",
@@ -525,8 +536,8 @@ NOTEBOOKS = [
      "title": "Хэрэгжүүлэх", "subtitle": "Practice log",
      "tagline": ["Understanding and living", "are two different things"], "seed": 23},
     {"file": "Сэтгэх · Thinking", "cover": ("cat",), "pages": "dot",
-     "title": "Сэтгэх", "subtitle": "the gathering of thoughts.",
-     "tagline": "Get your daily dose of quiet thinking.", "seed": 37},
+     "title": "Сэтгэх", "subtitle": "бодлоо бич, дараа нь асуу",
+     "tagline": "Question → Reflect → Apply", "seed": 37},
 ]
 
 
@@ -559,6 +570,13 @@ def build_notebook(nb, path):
     contents_page(c, "index", page_keys)
     c.addOutlineEntry("Агуулга", "index", level=0)
     c.showPage()
+    for n, (title, fn) in enumerate(GUIDE_PAGES.get(nb["pages"], [])):
+        paper(c)
+        fn(DigitalPage(c, 1))
+        key = f"guide{n}"
+        c.bookmarkPage(key)
+        c.addOutlineEntry(title, key, level=0)
+        c.showPage()
     # pages
     # draw the page body once as a reusable form; every page references it
     c.beginForm("body")
