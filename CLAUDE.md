@@ -117,6 +117,7 @@ Paper is for capture and practice. Obsidian is the archive and the connection ma
 - Symbols map to response tags: ★ insight · ♪ resonates · ? question · ✗ disagree · ↻ review · ● active. When the user sends a photo or transcription, turn each entry into a note (or update an existing one) using these mappings. Fill in the full quote only from text the user provides, never from memory.
 - Concept-tag families each have a hand-drawn icon, written before the tag word: cloud = Mind · wave = Emotions · diamond = Desire & happiness · eye = Self · balloon = Freedom & acceptance · stacked coil (helix) = Hope & inner · mountain = Action & craft · heart = Love. The icon shows the family; the word gives the exact tag. There are icons for families only, never for individual tags. Key: `_Print/tag-icons.svg`.
 - The printable inserts and their generator live in `_Print/`.
+- **Handwritten style.** When the user wants notes "in my style", use `_Print/handwriting.py` (see `_Print/make_health_notes.py`): all caps, black body, red for key lines and boxed titles, green for headings/second points, arrows (→, ↳), braces, underlines, strike-then-easy-version, small line doodles, on the realistic blank paper. Claude's own fact checks go in grey pencil, clearly separate from the source content. Avoid polished UI-style cards; that style was rejected.
 
 ## Books in play
 

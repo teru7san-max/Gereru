@@ -32,3 +32,15 @@ python3 _Print/make_goodnotes.py  # дэвтэр ба загварууд
 1. PDF-ээ iPad-ийн **Files** руу хадгал → GoodNotes Library → **New → Import**.
 2. Шинэ хуудас нэмэх: **Manage Notebook Templates → Paper → Import** → тохирох `template-…pdf`. Эсвэл байгаа хуудсаа **Duplicate** хий.
 3. Жижиг хуудсан дээр үзгийн хамгийн нарийн зузааныг сонго.
+
+## Гар бичмэл тэмдэглэл
+
+`make_health_notes.py` нь таны дэвтрийн хэв маягаар (бүгд том үсэг, хар · улаан · ногоон бэх, хайрцагласан гарчиг, сум, хаалт, жижиг зураг) 88 × 125 хоосон цаасан дээр бичнэ. Үр дүн: `notes/Health · handwritten.pdf` (11 хуудас: supplements, rice vs potatoes, meals, sleep).
+
+- Гар бичмэлийн хэрэгсэл: `handwriting.py`. Үсэг бүр бага зэрэг өөр, мөр бүр бага зэрэг долгиотой. Монгол кирилл үсэг (Ө, Ү орно) дэмждэг.
+- **Саарал харандаагаар** бичсэн "?" тэмдэглэлүүд нь Claude-ийн нэмсэн шалгалт, эх сурвалжийн хэсэг биш.
+
+```
+pip install Hershey-Fonts
+python3 _Print/make_health_notes.py --png
+```
