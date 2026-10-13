@@ -41,6 +41,8 @@ Notebooks are broad containers. A note lives in one primary notebook and reaches
 
 These are working categories, not permanent rules.
 
+`Books/` is not a notebook. It holds one hub note per book: source details, the user's raw notes kept verbatim, a critical look, and links to the concept notes drawn from it. Concept notes still live in the notebooks above. When the user sends a whole book's notes, keep them in the hub and pull out only the few ideas that connect most strongly to the vault; list the rest as candidates.
+
 ## Tags
 
 There are two separate dimensions. Don't mix them up.
@@ -60,7 +62,7 @@ Current vocabulary (it grows slowly):
 - **Emotions:** `emotions` `fear` `joy` `self-compassion` `emotional-regulation`
 - **Desire & happiness:** `desire` `happiness` `peace` `envy` `attachment` `freedom`
 - **Self:** `authenticity` `self-love` `self-awareness` `values` `identity`
-- **Freedom & acceptance:** `suffering` `letting-go` `acceptance` `non-resistance` `presence` `lightness`
+- **Freedom & acceptance:** `suffering` `letting-go` `simplicity` `acceptance` `non-resistance` `presence` `lightness`
 - **Hope & inner understanding:** `hope` `inner-wisdom` `meaning` `growth` `spirituality`
 - **Action & craft:** `resistance` `professionalism` `consistency` `creativity` `courage` `craft`
 - **Love:** `love` `compassion` `romantic-love` `trust` `intimacy` `connection` `relationships`
@@ -71,6 +73,7 @@ Distinctions worth keeping:
 - `acceptance`: acknowledging reality instead of denying it.
 - `letting-go`: releasing unnecessary attachment, struggle or control over what can't be controlled.
 - `non-resistance`: not fighting what is already happening inside, such as a thought or a feeling.
+- `simplicity`: deliberately subtracting commitments, things and options (outer). `letting-go` is the inner release that often has to come first.
 - `lightness`: a less burdened way of moving through life.
 - `peace`: the inner state that may result from the others.
 
@@ -120,6 +123,8 @@ Paper is for capture and practice. Obsidian is the archive and the connection ma
 - **Don't Believe Everything You Think** (Joseph Nguyen). Overthinking, suffering, thought and feeling, inner wisdom, acceptance, peace. Keep these apart: a thought and the reality it describes; an emotion and the interpretation attached to it; letting an emotion settle and suppressing it; accepting reality and passively giving up; trusting intuition and treating every feeling as infallible.
 - **The Almanack of Naval Ravikant.** Happiness, desire, peace, freedom, values, habits, time, envy. The recurring question is whether the user wants the thing itself or the state they expect it to bring. External goals can be real and worth pursuing; the expected feeling is a separate part of the equation. Don't flatten this into "circumstances never matter".
 - **The War of Art** (Steven Pressfield). Resistance, professionalism, consistency, courage, creativity, craft. This is the bridge from understanding to action. Connect it to `active` only when real practice is established.
+
+- **Essentialism** (Greg McKeown), abbreviation ESS. Hub: `Books/Essentialism.md`. Less but better, choice, elimination, saying no, review. A practical bridge between Naval's question about desire and Pressfield's action. Watch for the tension between extreme selectivity and maximizing, and between "choose yourself" and care for others.
 
 ## Voice
 

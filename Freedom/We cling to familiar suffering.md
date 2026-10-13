@@ -37,6 +37,7 @@ We often keep suffering not because we want it, but because the unknown scares u
 
 - [[Pain is the first arrow, suffering is the second]]: this explains why the "optional" second arrow is hard to drop.
 - [[Words point to the truth, experience reaches it]]: that passage says truth "feels like home". This one is a warning that the *familiar* can also feel like home. The two together sharpen the question of what "home" really means.
+- [[Would I choose it again today]]: status quo bias and sunk cost are the everyday mechanics of clinging to the familiar; the killer question cuts through them.
 - `letting-go` ↔ `fear` ↔ `attachment`: the fear of the unknown is what holds the attachment in place.
 
 ## Back to life

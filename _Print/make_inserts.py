@@ -51,7 +51,7 @@ TAGS = [
     ("Emotions", "wave", "emotions · fear · joy · self-compassion · emotional-regulation"),
     ("Desire & happiness", "diamond", "desire · happiness · peace · envy · attachment · freedom"),
     ("Self", "eye", "authenticity · self-love · self-awareness · values · identity"),
-    ("Freedom & acceptance", "balloon", "suffering · letting-go · acceptance · non-resistance · presence · lightness"),
+    ("Freedom & acceptance", "balloon", "suffering · letting-go · simplicity · acceptance · non-resistance · presence · lightness"),
     ("Hope & inner", "helix", "hope · inner-wisdom · meaning · growth · spirituality"),
     ("Action & craft", "mountain", "resistance · professionalism · consistency · creativity · courage · craft"),
     ("Love", "heart", "love · compassion · romantic-love · trust · intimacy · connection · relationships"),
@@ -135,6 +135,7 @@ BOOKS = [
     ("DBET", "Don't Believe Everything You Think", "J. Nguyen"),
     ("ALM", "The Almanack of Naval Ravikant", "E. Jorgenson"),
     ("WOA", "The War of Art", "S. Pressfield"),
+    ("ESS", "Essentialism", "G. McKeown"),
 ]
 
 

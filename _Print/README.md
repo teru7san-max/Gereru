@@ -6,7 +6,7 @@
 | `Practice-insert-A4.pdf` | **Хэрэгжүүлэх** insert: 32 хуудас, 4 A4 цаас |
 | `Inserts-88x125-preview.pdf` | Бүх хуудас бодит хэмжээгээр. Харах эсвэл хэвлэлийн газарт өгөхөд |
 | `make_inserts.py` | Гурвуулаа дахин үүсгэнэ (`python3 _Print/make_inserts.py`) |
-| `Tag-stickers-A4.pdf` | Наалт: 69 өнгөт tag tab, pixel наалт (Kushina, love, spiral, helix, hope), хариу tag-ийн дугуй наалт |
+| `Tag-stickers-A4.pdf` | Наалт: 70 өнгөт tag tab, pixel наалт (Kushina, love, spiral, helix, hope), хариу tag-ийн дугуй наалт |
 | `make_stickers.py` | Наалтыг дахин үүсгэнэ (`python3 _Print/make_stickers.py`) |
 | `Example-filled.pdf` / `.png` | Дүүргэсэн жишээ хуудас: Унших, Хэрэгжүүлэх, Сэтгэх (`make_example.py`) |
 | `tag-icons.svg` | 8 гэр бүлийн дүрсийн тайлбар |
