@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" font-family="-apple-system, 'SF Pro Text', 'Helvetica Neue', sans-serif">
+<title>HER volcano: activity peaks when hydrogen binds neither too strongly nor too weakly. DFT checks a few candidates in hours each, an MLIP checks many in seconds, and the ones near the top are shortlisted</title>
+<style>.ink{fill:#3b3b40}.muted{fill:#5f636b}.faint{fill:#8a8f98}.grid{stroke:#e9eaed}.wash-a{fill:#fff0c2;fill-opacity:.55}.wash-g{fill:#d8f3e4;fill-opacity:.7}.ok{fill:#0f6e56}@media (prefers-color-scheme:dark){.ink{fill:#e3e4e8}.muted{fill:#a8acb3}.grid{stroke:#3d4047}.wash-a{fill:#ba7517;fill-opacity:.2}.wash-g{fill:#1d9e75;fill-opacity:.22}.ok{fill:#4cc49b}}</style>
+<g><animate attributeName="opacity" values="0;1;1;0" keyTimes="0;.02;.96;1" dur="12s" repeatCount="indefinite"/>
+<text x="20" y="28" font-size="12" class="muted">what the thesis computes: the HER volcano</text>
+<rect x="178" y="62" width="44" height="176" rx="4" class="wash-g" opacity="0"><animate attributeName="opacity" values="0;0;1;1" keyTimes="0;0.66;0.7;1" dur="12s" repeatCount="indefinite"/></rect>
+<path d="M60 238H340" class="grid" stroke-width="1.6"/>
+<path d="M90 238v4" class="grid" stroke-width="1.4"/><text x="90" y="253" font-size="9.5" class="faint" text-anchor="middle">−0.50</text>
+<path d="M145 238v4" class="grid" stroke-width="1.4"/><text x="145" y="253" font-size="9.5" class="faint" text-anchor="middle">−0.25</text>
+<path d="M200 238v4" class="grid" stroke-width="1.4"/><text x="200" y="253" font-size="9.5" class="faint" text-anchor="middle">0</text>
+<path d="M255 238v4" class="grid" stroke-width="1.4"/><text x="255" y="253" font-size="9.5" class="faint" text-anchor="middle">+0.25</text>
+<path d="M310 238v4" class="grid" stroke-width="1.4"/><text x="310" y="253" font-size="9.5" class="faint" text-anchor="middle">+0.50</text>
+<text x="200" y="268" font-size="10.5" class="muted" text-anchor="middle">ΔG<tspan font-size="8" dy="3">H*</tspan><tspan dy="-3"> (eV) · how strongly H sticks</tspan></text>
+<text x="34" y="150" font-size="10.5" class="muted" text-anchor="middle" transform="rotate(-90 34 150)">activity →</text>
+<path d="M68 228L200 72L332 228" fill="none" stroke="#ba7517" stroke-width="2" stroke-linejoin="round"/>
+<text x="68" y="140" font-size="9.5" class="faint">sticks too</text><text x="68" y="152" font-size="9.5" class="faint">strongly</text><text x="332" y="140" font-size="9.5" class="faint" text-anchor="end">sticks too</text><text x="332" y="152" font-size="9.5" class="faint" text-anchor="end">weakly</text>
+<text x="200" y="54" font-size="10" fill="#ba7517" text-anchor="middle">just right · ΔG ≈ 0</text>
+<circle cx="180.2" cy="95.4" r="5" fill="#3569b0"/><text x="171.2" y="97.4" font-size="9.5" fill="#3569b0" text-anchor="end">Pt (expensive)</text>
+<circle cx="107.6" cy="184.2" r="0" fill="#9aa0aa"><animate attributeName="r" values="0;0;7.5;4.5;4.5" keyTimes="0;0.08;0.095;0.11;1" dur="12s" repeatCount="indefinite"/></circle>
+<circle cx="268.2" cy="148.6" r="0" fill="#9aa0aa"><animate attributeName="r" values="0;0;7.5;4.5;4.5" keyTimes="0;0.155;0.17;0.185;1" dur="12s" repeatCount="indefinite"/></circle>
+<circle cx="151.6" cy="134.2" r="0" fill="#9aa0aa"><animate attributeName="r" values="0;0;7.5;4.5;4.5" keyTimes="0;0.23;0.245;0.26;1" dur="12s" repeatCount="indefinite"/></circle>
+<circle cx="305.6" cy="198.8" r="0" fill="#9aa0aa"><animate attributeName="r" values="0;0;7.5;4.5;4.5" keyTimes="0;0.305;0.32;0.335;1" dur="12s" repeatCount="indefinite"/></circle>
+<text x="200" y="288" font-size="11.5" fill="#ba7517" text-anchor="middle" opacity="0">DFT · hours per candidate<animate attributeName="opacity" values="0;0;1;1;0;0" keyTimes="0;0.06;0.09;0.34;0.37;1" dur="12s" repeatCount="indefinite"/></text>
+<circle cx="79.0" cy="217.0" r="0" fill="#6a4bc0"><animate attributeName="r" values="0;0;7;4;4" keyTimes="0;0.42;0.435;0.45;1" dur="12s" repeatCount="indefinite"/></circle>
+<circle cx="120.8" cy="162.6" r="0" fill="#6a4bc0"><animate attributeName="r" values="0;0;7;4;4" keyTimes="0;0.427;0.442;0.457;1" dur="12s" repeatCount="indefinite"/></circle>
+<circle cx="136.2" cy="151.4" r="0" fill="#6a4bc0"><animate attributeName="r" values="0;0;7;4;4" keyTimes="0;0.434;0.449;0.464;1" dur="12s" repeatCount="indefinite"/></circle>
+<circle cx="162.6" cy="114.2" r="0" fill="#6a4bc0"><animate attributeName="r" values="0;0;7;4;4" keyTimes="0;0.441;0.456;0.471;1" dur="12s" repeatCount="indefinite"/></circle>
+<circle cx="191.2" cy="85.4" r="0" fill="#6a4bc0"><animate attributeName="r" values="0;0;7;4;4" keyTimes="0;0.448;0.463;0.478;1" dur="12s" repeatCount="indefinite"/></circle>
+<circle cx="94.4" cy="192.8" r="0" fill="#6a4bc0"><animate attributeName="r" values="0;0;7;4;4" keyTimes="0;0.455;0.47;0.485;1" dur="12s" repeatCount="indefinite"/></circle>
+<circle cx="208.8" cy="79.4" r="0" fill="#6a4bc0"><animate attributeName="r" values="0;0;7;4;4" keyTimes="0;0.462;0.477;0.492;1" dur="12s" repeatCount="indefinite"/></circle>
+<circle cx="230.8" cy="112.4" r="0" fill="#6a4bc0"><animate attributeName="r" values="0;0;7;4;4" keyTimes="0;0.469;0.484;0.499;1" dur="12s" repeatCount="indefinite"/></circle>
+<circle cx="246.2" cy="123.6" r="0" fill="#6a4bc0"><animate attributeName="r" values="0;0;7;4;4" keyTimes="0;0.476;0.491;0.506;1" dur="12s" repeatCount="indefinite"/></circle>
+<circle cx="259.4" cy="144.2" r="0" fill="#6a4bc0"><animate attributeName="r" values="0;0;7;4;4" keyTimes="0;0.483;0.498;0.513;1" dur="12s" repeatCount="indefinite"/></circle>
+<circle cx="283.6" cy="168.8" r="0" fill="#6a4bc0"><animate attributeName="r" values="0;0;7;4;4" keyTimes="0;0.49;0.505;0.52;1" dur="12s" repeatCount="indefinite"/></circle>
+<circle cx="296.8" cy="190.4" r="0" fill="#6a4bc0"><animate attributeName="r" values="0;0;7;4;4" keyTimes="0;0.497;0.512;0.527;1" dur="12s" repeatCount="indefinite"/></circle>
+<circle cx="316.6" cy="206.8" r="0" fill="#6a4bc0"><animate attributeName="r" values="0;0;7;4;4" keyTimes="0;0.504;0.519;0.534;1" dur="12s" repeatCount="indefinite"/></circle>
+<circle cx="219.8" cy="97.4" r="0" fill="#6a4bc0"><animate attributeName="r" values="0;0;7;4;4" keyTimes="0;0.511;0.526;0.541;1" dur="12s" repeatCount="indefinite"/></circle>
+<circle cx="167.0" cy="107.0" r="0" fill="#6a4bc0"><animate attributeName="r" values="0;0;7;4;4" keyTimes="0;0.518;0.533;0.548;1" dur="12s" repeatCount="indefinite"/></circle>
+<circle cx="272.6" cy="162.8" r="0" fill="#6a4bc0"><animate attributeName="r" values="0;0;7;4;4" keyTimes="0;0.525;0.54;0.555;1" dur="12s" repeatCount="indefinite"/></circle>
+<circle cx="145.0" cy="133.0" r="0" fill="#6a4bc0"><animate attributeName="r" values="0;0;7;4;4" keyTimes="0;0.532;0.547;0.562;1" dur="12s" repeatCount="indefinite"/></circle>
+<circle cx="239.6" cy="121.8" r="0" fill="#6a4bc0"><animate attributeName="r" values="0;0;7;4;4" keyTimes="0;0.539;0.554;0.569;1" dur="12s" repeatCount="indefinite"/></circle>
+<text x="200" y="288" font-size="11.5" fill="#6a4bc0" text-anchor="middle" opacity="0">MLIP · seconds per candidate<animate attributeName="opacity" values="0;0;1;1;0;0" keyTimes="0;0.4;0.43;0.62;0.65;1" dur="12s" repeatCount="indefinite"/></text>
+<circle cx="191.2" cy="85.4" r="8" fill="none" stroke="#1d9e75" stroke-width="1.8" opacity="0"><animate attributeName="opacity" values="0;0;1;1" keyTimes="0;0.7;0.73;1" dur="12s" repeatCount="indefinite"/></circle>
+<circle cx="208.8" cy="79.4" r="8" fill="none" stroke="#1d9e75" stroke-width="1.8" opacity="0"><animate attributeName="opacity" values="0;0;1;1" keyTimes="0;0.7;0.73;1" dur="12s" repeatCount="indefinite"/></circle>
+<circle cx="219.8" cy="97.4" r="8" fill="none" stroke="#1d9e75" stroke-width="1.8" opacity="0"><animate attributeName="opacity" values="0;0;1;1" keyTimes="0;0.7;0.73;1" dur="12s" repeatCount="indefinite"/></circle>
+<text x="200" y="288" font-size="11.5" class="ok" text-anchor="middle" opacity="0">shortlist the ones near the top → confirm with DFT<animate attributeName="opacity" values="0;0;1;1;0;0" keyTimes="0;0.68;0.71;0.8;0.83;1" dur="12s" repeatCount="indefinite"/></text>
+<text x="200" y="288" font-size="11.5" class="ok" text-anchor="middle" opacity="0">goal: cheap double-atom catalysts as good as Pt<animate attributeName="opacity" values="0;0;1;1" keyTimes="0;0.84;0.87;1" dur="12s" repeatCount="indefinite"/></text>
+</g></svg>
